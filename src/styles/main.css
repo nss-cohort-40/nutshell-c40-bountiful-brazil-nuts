@@ -1,0 +1,25 @@
+#--sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-color: black;
+    z-index: 999;
+}
+
+/* .--sidebar-options {
+    justify-content: center;
+} */
+
+.--sidebar-option {
+    color: white;
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+    display: block;
+}
+.--sidebar-option:hover {
+    text-decoration: none;
+    background-color: white;
+    color: black;
+}
