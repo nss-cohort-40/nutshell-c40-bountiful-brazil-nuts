@@ -1,9 +1,10 @@
 import tasksAPI from "./tasksData.js"
 import tasks from "./tasks.js"
-
+import tasksDOM from "./tasksDOM.js"
 
 // TASKS EVENT LISTENERS
 // Loading list content
+tasksDOM.writeDOM()
 tasks.listTasks()
 // Task submit event listener for new task
 document.querySelector("#submitBtn").addEventListener("click", event => {
@@ -19,12 +20,6 @@ document.querySelector("#submitBtn").addEventListener("click", event => {
         let taskObject = tasks.createTaskObject()
         tasksAPI.saveTask(taskObject)
     }
-})
-
-// Tasks submit event listener for edit task
-document.querySelector("#submitBtn").addEventListener("click", event => {
-    event.preventDefault()
-
 })
 
 // Task complete button event listener
@@ -43,6 +38,5 @@ document.querySelector("#tasks").addEventListener("click", event => {
     if (event.target.id.startsWith("editTask--")) {
         let taskToEdit = event.target.id.split("--")[1]
         tasks.getTaskFields(taskToEdit)
-
     }
 })
