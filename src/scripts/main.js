@@ -1,10 +1,17 @@
+// Registration imports
 import regDOM from "./regDOM.js"
 import Data from "./regData.js"
 import makeRegistrationForm from "./regComp.js"
 
+// Tasks imports
+import tasksAPI from "./tasksData.js"
+import tasks from "./tasks.js"
+import tasksDOM from "./tasksDOM.js"
+
 const container = document.getElementById("container")
 
-regDOM.renderForm();
+// regDOM.renderForm();
+
 
 // EVENT LISTENER TO CREATE ACCOUNT AFTER COMPLETING REGISTRATION FORM
 container.addEventListener("click", event => {
@@ -39,5 +46,47 @@ container.addEventListener("click", event => {
         // DO THIS IS IF ANY FORM FIELD IS BLANK
         window.alert("Please complete your registration")
     }
+}
+})
+    
+
+
+// TASKS EVENT LISTENERS
+// Loading list content
+tasksDOM.writeDOM()
+tasks.listTasks()
+// Task submit event listener for new task
+document.querySelector("#submitBtn").addEventListener("click", event => {
+    event.preventDefault()
+
+    // Edit an existing task
+    const hiddenTaskId = document.querySelector("#taskId").value
+    if (hiddenTaskId.value != "") {
+        tasks.editTask(hiddenTaskId)
+
+        // Creating a new task
+    } else {
+        let taskObject = tasks.createTaskObject()
+        tasksAPI.saveTask(taskObject)
     }
+})
+
+// Task complete button event listener
+document.querySelector("#tasks").addEventListener("click", event => {
+    if (event.target.id.startsWith("completeTask--")) {
+        let tagId = event.target.id.split("--")[1]
+        tasksAPI.getTask(tagId).then(task => {
+            task.completed = true;
+            tasksAPI.editTask(task.id, task)
+        })
+    }
+})
+
+// Task edit button event listener 
+document.querySelector("#tasks").addEventListener("click", event => {
+    if (event.target.id.startsWith("editTask--")) {
+        let taskToEdit = event.target.id.split("--")[1]
+        tasks.getTaskFields(taskToEdit)
+    }
+    
 })
