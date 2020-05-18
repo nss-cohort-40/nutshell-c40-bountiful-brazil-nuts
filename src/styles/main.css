@@ -1,12 +1,5 @@
-html,body {
-    min-height: 100%;
-}
-/* 
-.--main {
-} */
 
-
-#--sidebar {
+.--sidebar {
     background-color: black;
 }
 
@@ -16,4 +9,8 @@ html,body {
 
 .--chatbar {
     background-color: yellowgreen;
+}
+
+.--main {
+    height: 100vh;
 }
