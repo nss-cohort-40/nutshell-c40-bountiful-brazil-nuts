@@ -2,10 +2,13 @@ import regDOM from "./regDOM.js"
 import Data from "./regData.js"
 import makeRegistrationForm from "./regComp.js"
 
+const container = document.getElementById("container")
+
 regDOM.renderForm();
 
 // EVENT LISTENER TO CREATE ACCOUNT AFTER COMPLETING REGISTRATION FORM
-document.getElementById("register-account").addEventListener("click", event => {
+container.addEventListener("click", event => {
+    if (event.target.id.startsWith("register--")) {
     event.preventDefault();
     let username = document.getElementById("username").value;
     let email = document.getElementById("emailAddress").value;
@@ -35,5 +38,6 @@ document.getElementById("register-account").addEventListener("click", event => {
     } else {
         // DO THIS IS IF ANY FORM FIELD IS BLANK
         window.alert("Please complete your registration")
+    }
     }
 })

@@ -14,7 +14,7 @@ function makeRegistrationForm () {
 
         <label for="confirmPassword">Confirm Password: </label>
         <input type="text" name="confirmPassword" id="confirmPassword">
-        <button id="register-account">Register</button>
+        <button id="register--account">Register</button>
       </fieldset>
     </form>
     `
