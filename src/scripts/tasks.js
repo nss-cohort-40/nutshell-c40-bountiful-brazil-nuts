@@ -19,42 +19,23 @@ const createTaskObject = () => {
     return taskObject
 }
 
-// Render task list to DOM
-function listTasks () {
-    let tasksDiv = document.querySelector("#tasks")
-    tasksDiv.innerHTML = ""
-    tasksAPI.getTasks().then( tasks => {
-        tasks.forEach(task => {
-            // If task object completed is false then render
-            if (task.completed == false)
-            tasksDiv.innerHTML += taskComponent.createTask(task)
-        });
-    })
-}
-
-// Prepopulate task fields for editing 
-const getTaskFields = taskId => {
-    let hiddenTagId = document.querySelector("#taskId")
-    let taskName = document.querySelector("#task")
-    let dueDate = document.querySelector("#dueDate")
-
-    tasksAPI.getTask(taskId).then(task => {
-        hiddenTagId.value = task.id
-        taskName.value = task.task
-        dueDate.value = task.dueDate
-    })
-}
-
 // Editing a task 
 const editTask = taskId => {
     let updatedTask = {
-        task: document.querySelector("#task").value,
-        dueDate: document.querySelector("#dueDate").value,
+        task: document.querySelector(`#taskName--${taskId}`).innerHTML,
+        dueDate: document.querySelector(`#dueDate--${taskId}`).innerHTML,
         completed: false
     }
-    tasksAPI.editTask(taskId, updatedTask).then(
-        document.querySelector("#taskId").value = ""
-    )
+    tasksAPI.editTask(taskId, updatedTask)
+}
+
+// Rendering tasks to the DOM
+const renderTasks = tasks => {
+    let element = document.querySelector("#tasks");
+    tasks.forEach(task => {
+        if (task.completed == false)
+        element.innerHTML += taskComponent.createTask(task)
+    });
 }
  
-export default { createTaskObject, listTasks, getTaskFields, editTask }
+export default { createTaskObject, editTask, renderTasks }
