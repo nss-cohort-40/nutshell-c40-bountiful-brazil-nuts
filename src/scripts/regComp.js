@@ -1,4 +1,4 @@
-// EMPTY REGISTRATION FORM COMPONENT
+// REGISTRATION FORM COMPONENT
 function makeRegistrationForm () {
     return `
     <form action="">
