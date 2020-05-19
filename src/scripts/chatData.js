@@ -12,20 +12,17 @@
 // TODO: Create html string template for container(id="chatBox")
 // TODO: Create html string template for messages(class="message") ??
 // TODO: Create text input for message
-// TODO: Enable keypress event to submit newMessage(charCode == 13)
-// TODO: POST newMessage to API
-// TODO: GET and render newMessage to chatBox(with username prepended)
-
-
-
-const apiUrl = "http://localhost:8088/messages";
+// Enable keypress event to submit newMessage(charCode == 13)
+// POST newMessage to API
+// GET and render newMessage to chatBox(with username prepended)
+// TODO: Link userid to username and include in newMessage
 
 const API = {
-  getMessages() {
-    return fetch(`${apiUrl}`).then(response => response.json());
+  getMessage(messageId) {
+    return fetch(`http://localhost:8088/messages/${messageId}`).then(response => response.json());
   },
   submitMessage(message) {
-    return fetch(`${apiUrl}`, {
+    return fetch("http://localhost:8088/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,6 +30,10 @@ const API = {
       body: JSON.stringify(message),
     }).then(response => response.json());
   },
+  getUsername(userId) {
+    // USE EMBED(?) TO GET USER BY USERID
+    return fetch("http://localhost:8088/users").then(response => response.json());
+  }
 }
 
 export default API
