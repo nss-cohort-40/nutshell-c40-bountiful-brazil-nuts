@@ -1,16 +1,16 @@
 
-.--sidebar {
+.--sidebar--container {
     background-color: black;
 }
 
-.--central {
-    background-color: violet;
+.--central--container {
+    background-color: white;
 }
 
-.--chatbar {
-    background-color: yellowgreen;
+.--chatbar--container {
+    background-color: gray;
 }
 
-.--main {
+.--main--container {
     height: 100vh;
 }
