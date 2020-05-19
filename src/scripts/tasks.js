@@ -22,6 +22,7 @@ const createTaskObject = () => {
 // Render task list to DOM
 function listTasks () {
     let tasksDiv = document.querySelector("#tasks")
+    tasksDiv.innerHTML = ""
     tasksAPI.getTasks().then( tasks => {
         tasks.forEach(task => {
             // If task object completed is false then render
@@ -48,7 +49,8 @@ const getTaskFields = taskId => {
 const editTask = taskId => {
     let updatedTask = {
         task: document.querySelector("#task").value,
-        dueDate: document.querySelector("#dueDate").value
+        dueDate: document.querySelector("#dueDate").value,
+        completed: false
     }
     tasksAPI.editTask(taskId, updatedTask).then(
         document.querySelector("#taskId").value = ""

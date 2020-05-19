@@ -6,20 +6,33 @@ import tasksDOM from "./tasksDOM.js"
 // Loading list content
 tasksDOM.writeDOM()
 tasks.listTasks()
+
+const newTaskBtn = document.querySelector("#newTaskBtn")
+const formView = document.querySelector("#formView")
+
 // Task submit event listener for new task
 document.querySelector("#submitBtn").addEventListener("click", event => {
     event.preventDefault()
-
     // Edit an existing task
+    
     const hiddenTaskId = document.querySelector("#taskId").value
-    if (hiddenTaskId.value != "") {
+    if (hiddenTaskId != "") {
         tasks.editTask(hiddenTaskId)
-
-        // Creating a new task
+        
+    // Creating a new task
     } else {
         let taskObject = tasks.createTaskObject()
         tasksAPI.saveTask(taskObject)
     }
+    // Hide form and reveal button
+    newTaskBtn.style.display = "block"
+    formView.style.display = "none"
+})
+
+// Hide button and reveal form
+newTaskBtn.addEventListener("click", () => {
+    newTaskBtn.style.display = "none"
+    formView.style.display = "block"
 })
 
 // Task complete button event listener
