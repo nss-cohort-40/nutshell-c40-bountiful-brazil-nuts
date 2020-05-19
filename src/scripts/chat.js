@@ -8,7 +8,6 @@ document.querySelector("#newMessage").addEventListener("keypress", event => {
     let messageId
     if (newMessage.content != "") {
       API.submitMessage(newMessage).then(response => {
-        debugger
         messageId = response.id;
         API.getMessage(messageId).then(renderMessage)
       })
@@ -16,3 +15,14 @@ document.querySelector("#newMessage").addEventListener("keypress", event => {
   }
 }
 )
+
+
+function prepopulateEdit(message) {
+  messageId: 
+  }
+
+const editMessage = document.querySelector(".editBtn")
+
+editMessage.addEventListener("click", event => {
+
+})
