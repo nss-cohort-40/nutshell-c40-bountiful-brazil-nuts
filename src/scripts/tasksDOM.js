@@ -1,3 +1,6 @@
+// Author: Zane Bliss
+// Purpose: Task DOM manipulation
+
 import taskComponent from "./tasksComponent.js"
 import tasksAPI from "./tasksData.js"
 import taskFunctions from "./tasksFunctions.js"
