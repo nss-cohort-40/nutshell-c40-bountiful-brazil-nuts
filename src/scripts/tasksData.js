@@ -2,7 +2,6 @@
 // Purpose: To expose database resources to other modules.
 
 const tasksAPI = {
-    // Get functions from the API
     getTasks() {
         return fetch(`http://localhost:8088/tasks`)
             .then(response => response.json())
@@ -28,6 +27,12 @@ const tasksAPI = {
             },
             body: JSON.stringify(object)
         })
+    },
+    deleteTask(id) {
+        return fetch(`http://localhost:8088/tasks/${id}`, {
+            method: "DELETE"
+        })
+            .then(response => response.json())
     }
 }
 

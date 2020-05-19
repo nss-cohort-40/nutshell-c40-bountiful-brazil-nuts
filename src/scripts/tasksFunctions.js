@@ -32,9 +32,11 @@ const editTask = taskId => {
 // Rendering tasks to the DOM
 const renderTasks = tasks => {
     let element = document.querySelector("#tasks");
+    console.log(tasks.sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate)))
     tasks.forEach(task => {
-        if (task.completed == false)
-        element.innerHTML += taskComponent.createTask(task)
+        if (task.completed == false) {
+            element.innerHTML += taskComponent.createTask(task)
+        }
     });
 }
  

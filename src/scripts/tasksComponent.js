@@ -3,10 +3,12 @@
 
 const createTask = object => {
     return `
+    <div id="taskDiv--${object.id}">
     <p id="taskName--${object.id}" contenteditable="true">${object.task}</p>
     <p id="dueDate--${object.id}">${object.dueDate}</p>
     <button id="completeTask--${object.id}"></button>
     <button id="deleteTask--${object.id}">Delete</button>
+</div>
     `
 }
 

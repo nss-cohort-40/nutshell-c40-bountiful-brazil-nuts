@@ -1,5 +1,5 @@
 import tasksAPI from "./tasksData.js"
-import tasks from "./tasks.js"
+import taskFunctions from "./tasksFunctions.js"
 import tasksDOM from "./tasksDOM.js"
 
 // TASKS EVENT LISTENERS
@@ -17,11 +17,11 @@ newTaskBtn.addEventListener("click", () => {
 })
 
 // Task submit event listener for new task
-document.querySelector("#submitBtn").addEventListener("click", event => {
+document.querySelector("#submitBtn").addEventListener("click", () => {
     // Edit an existing task
-    let taskObject = tasks.createTaskObject()
+    let taskObject = taskFunctions.createTaskObject()
     tasksAPI.saveTask(taskObject)
-    
+
     newTaskBtn.style.display = "block"
     formView.style.display = "none"
 })
@@ -30,15 +30,14 @@ document.querySelector("#submitBtn").addEventListener("click", event => {
 // Task complete button event listener
 document.querySelector("#tasks").addEventListener("click", event => {
     if (event.target.id.startsWith("completeTask--")) {
-        let tagId = event.target.id.split("--")[1]
-        tasksAPI.getTask(tagId).then(task => {
-            task.completed = true;
+        let taskId = event.target.id.split("--")[1]
+        tasksAPI.getTask(taskId).then(task => {
+            task.completed = true
             tasksAPI.editTask(task.id, task)
-        }).then(tasksDOM.writeTasks())
-        
+        })
+        document.querySelector(`#taskDiv--${taskId}`).remove()
     }
 })
-
 
 // Editing a task
 document.querySelector("#tasks").addEventListener("keypress", event => {
@@ -46,7 +45,16 @@ document.querySelector("#tasks").addEventListener("keypress", event => {
         let taskToEdit = event.target.id.split("--")[1]
         if (event.charCode == 13) {
             event.preventDefault()
-            tasks.editTask(taskToEdit)
+            taskFunctions.editTask(taskToEdit)
         }
+    }
+})
+
+// Deleting a task
+document.querySelector("#tasks").addEventListener("click", event => {
+    if (event.target.id.startsWith("deleteTask--")) {
+        let taskId = event.target.id.split("--")[1]
+        tasksAPI.deleteTask(taskId)
+        document.querySelector(`#taskDiv--${taskId}`).remove()
     }
 })
