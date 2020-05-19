@@ -1,6 +1,7 @@
 // REGISTRATION FORM COMPONENT
 function makeRegistrationForm () {
     return `
+    <h1>Welcome to Nutshell</h1>
     <form action="">
       <fieldset id="registration-form">
         <label for="username">Username: </label>
