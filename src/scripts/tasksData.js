@@ -20,7 +20,7 @@ const tasksAPI = {
         }).then(response => response.json())
     },
     saveTask(object) {
-        fetch(`http://localhost:8088/tasks`, {
+        return fetch(`http://localhost:8088/tasks`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
