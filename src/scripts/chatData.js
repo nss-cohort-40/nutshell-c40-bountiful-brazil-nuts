@@ -37,21 +37,3 @@ const API = {
 }
 
 export default API
-
-
-
-
-
-
-
-
-
-// let container = document.querySelector("#container")
-
-// let chatBox = document.createElement("div");
-// chatBox.setAttribute("id", "chatBox");
-
-// let newMessage = document.createElement("input");
-// newMessage.type = "text"
-
-// document.container.appendChild("chatBox")
