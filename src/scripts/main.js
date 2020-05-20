@@ -24,7 +24,7 @@ container.addEventListener("click", event => {
 // EVENT LISTENER TO CREATE ACCOUNT AFTER COMPLETING REGISTRATION FORM - "REGISTER" BUTTON
 container.addEventListener("click", event => {
     if (event.target.id.startsWith("register--")) {
-    event.preventDefault();
+        event.preventDefault();
     let username = document.getElementById("username").value;
     let email = document.getElementById("emailAddress").value;
     let password = document.getElementById("password").value;
@@ -78,7 +78,7 @@ document.querySelector("#submitBtn").addEventListener("click", () => {
     // Edit an existing task
     event.preventDefault()
     let taskObject = taskFunctions.createTaskObject()
-    tasksAPI.saveTask(taskObject).then(tasksDOM.writeTasks())
+    tasksAPI.saveTask(taskObject).then(tasksDOM.writeTasks)
 
     newTaskBtn.style.display = "block"
     formView.style.display = "none"

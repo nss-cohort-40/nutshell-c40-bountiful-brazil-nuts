@@ -16,7 +16,6 @@ const taskDOM = () => {
     return `
     <button type="button" id="newTaskBtn">New task</button>
     <form id="formView">
-    <input type="hidden" id="taskId" value="">
     <label for="">Task name </label>
     <input type="text" id="task">
     <br>
