@@ -1,5 +1,5 @@
 // Author: Zane Bliss
-// Purpose: To expose task database resources to other modules.
+// Purpose: To expose task database resources to other modules
 
 const tasksAPI = {
     getTasks() {

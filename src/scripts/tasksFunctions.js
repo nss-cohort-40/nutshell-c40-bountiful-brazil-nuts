@@ -1,5 +1,5 @@
 // Author: Zane Bliss
-// Purpose: To provide task manipulation functions.
+// Purpose: To provide task manipulation functions
 
 import tasksAPI from "./tasksData.js";
 import taskComponent from "./tasksComponent.js"

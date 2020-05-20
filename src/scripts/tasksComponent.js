@@ -25,6 +25,7 @@ const taskDOM = () => {
     <br>
     <button type="submit" id="submitBtn">Submit</button>
     </form>
+    <div id="completedTasks"></div>
     <div id="tasks"></div>
     `
 }
