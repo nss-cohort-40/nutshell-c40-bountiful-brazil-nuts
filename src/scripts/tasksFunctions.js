@@ -3,6 +3,7 @@
 
 import tasksAPI from "./tasksData.js";
 import taskComponent from "./tasksComponent.js"
+import tasksDOM from  "./tasksDOM.js"
 
 // Create and return a new task object
 const createTaskObject = () => {

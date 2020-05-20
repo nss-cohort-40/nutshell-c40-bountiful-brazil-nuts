@@ -68,6 +68,7 @@ const formView = document.querySelector("#formView")
 
 // Hide button and reveal form
 newTaskBtn.addEventListener("click", () => {
+    event.preventDefault()
     newTaskBtn.style.display = "none"
     formView.style.display = "block"
 })
@@ -75,8 +76,9 @@ newTaskBtn.addEventListener("click", () => {
 // Task submit event listener for new task
 document.querySelector("#submitBtn").addEventListener("click", () => {
     // Edit an existing task
+    event.preventDefault()
     let taskObject = taskFunctions.createTaskObject()
-    tasksAPI.saveTask(taskObject)
+    tasksAPI.saveTask(taskObject).then(tasksDOM.writeTasks())
 
     newTaskBtn.style.display = "block"
     formView.style.display = "none"
@@ -85,6 +87,7 @@ document.querySelector("#submitBtn").addEventListener("click", () => {
 
 // Task complete button event listener
 document.querySelector("#tasks").addEventListener("click", event => {
+    event.preventDefault()
     if (event.target.id.startsWith("completeTask--")) {
         let taskId = event.target.id.split("--")[1]
         tasksAPI.getTask(taskId).then(task => {
@@ -97,6 +100,7 @@ document.querySelector("#tasks").addEventListener("click", event => {
 
 // Editing a task
 document.querySelector("#tasks").addEventListener("keypress", event => {
+    event.preventDefault()
     if (event.target.id.startsWith("taskName--")) {
         let taskToEdit = event.target.id.split("--")[1]
         if (event.charCode == 13) {
@@ -108,6 +112,7 @@ document.querySelector("#tasks").addEventListener("keypress", event => {
 
 // Deleting a task
 document.querySelector("#tasks").addEventListener("click", event => {
+    event.preventDefault()
     if (event.target.id.startsWith("deleteTask--")) {
         let taskId = event.target.id.split("--")[1]
         tasksAPI.deleteTask(taskId)
