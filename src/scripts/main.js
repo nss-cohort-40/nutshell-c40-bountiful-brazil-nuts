@@ -92,9 +92,8 @@ document.querySelector("#tasks").addEventListener("click", event => {
         let taskId = event.target.id.split("--")[1]
         tasksAPI.getTask(taskId).then(task => {
             task.completed = true
-            tasksAPI.editTask(task.id, task)
+            tasksAPI.editTask(task.id, task).then(tasksDOM.writeTasks)
         })
-        document.querySelector(`#taskDiv--${taskId}`).remove()
     }
 })
 
