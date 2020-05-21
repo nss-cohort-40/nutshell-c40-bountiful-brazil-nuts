@@ -9,6 +9,7 @@ document.querySelector("#chatbox").addEventListener("keypress", event => {
     if (document.querySelector("#chatId") != "") {
       let messageId = document.querySelector("#chatId").value
       if (event.charCode == 13) {
+        debugger
         editMessage(messageId).then(() => {
           document.querySelector(".messages").innerHTML = ""
           chatDOM.renderAllMessages
