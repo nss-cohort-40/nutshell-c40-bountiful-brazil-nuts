@@ -7,7 +7,6 @@ const makeMessageComponent = (message) => {
   <button id="messageEdit--${message.id}" class="editBtn">Edit</button>`
 }
 
-// Cred: Zane Bliss 
 const makeChatContainer = () => {
   return `
   <div id="chatWrapper">

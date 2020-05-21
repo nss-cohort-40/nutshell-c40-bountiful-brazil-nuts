@@ -1,6 +1,5 @@
-// Author: Tanner Brainard
+// Author: Zane Bliss & Tanner Brainard
 
-import chatComp from "./chatComp.js"
 import API from "./chatData.js"
 import chatDOM from "./chatDOM.js"
 
