@@ -1,24 +1,23 @@
 // Authors: Tanner Brainard & Zane Bliss
 
 const makeMessageComponent = (message) => {
+  console.log(message)
   return `
-  <p class="message">${"Username"}: ${message.content}</p>
+  <p class="message">${message.user["username"]}: <span id="message--${message.id}">${message.content}</span></p>
   <button id="messageEdit--${message.id}" class="editBtn">Edit</button>`
 }
 
-// Cred: Zane Bliss
+// Cred: Zane Bliss 
 const makeChatContainer = () => {
   return `
+  <div id="chatWrapper">
   <section id="chatbox">
-  <input type="text" id="newMessage"></input>
+  <input type="hidden" id="chatId" value=""></input>
+  <input type="text" id="messageInput"></input>
   <p class="messages"></p>
   </section>
+  </div>
   `
 }
 
-const makeEditBox = () => {
-  return `<input type="text" id="editBox"></input>
-  <button id="saveEditBtn" class="saveBtn">Save</button>`
-}
-
-export default { makeMessageComponent, makeChatContainer, makeEditBox }
+export default { makeMessageComponent, makeChatContainer }

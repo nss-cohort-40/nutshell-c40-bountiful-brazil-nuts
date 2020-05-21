@@ -5,17 +5,29 @@ import API from "./chatData.js"
 import chatDOM from "./chatDOM.js"
 
 
-document.querySelector("#container").addEventListener("keypress", event => {
-  if (event.target.id == "newMessage") {
-    if (event.charCode == 13) {
+document.querySelector("#chatbox").addEventListener("keypress", event => {
+  if (event.target.id == "messageInput") {
+    if (document.querySelector("#chatId") != "") {
+      let messageId = document.querySelector("#chatId").value
+      if (event.charCode == 13) {
+        editMessage(messageId).then(() => {
+          document.querySelector(".messages").innerHTML = ""
+          chatDOM.renderAllMessages
+        })
+      }
+    }
+    else if (event.charCode == 13) {
       // SORT HOW TO TARGET USERID FROM LOGGED-IN USER
-      let newMessage = { content: event.target.value }
+      let newMessage = {
+        userId: parseInt(sessionStorage.getItem("activeUser")),
+        content: event.target.value
+      }
       let messageId
       if (newMessage.content != "") {
         API.submitMessage(newMessage).then(response => {
           messageId = response.id;
           API.getMessage(messageId).then(chatDOM.renderMessage)
-          document.getElementById("newMessage").value = "";
+          document.getElementById("messageInput").value = "";
         })
       }
     }
@@ -23,21 +35,20 @@ document.querySelector("#container").addEventListener("keypress", event => {
 }
 )
 
+function editMessage(id) {
+  const updatedMessage = {
+    userId: parseInt(id),
+    content: document.querySelector("#messageInput").value
+  }
+  API.editMessage(id, updatedMessage).then(API.getAllMessages)
+}
 
-// function prepopulateEdit(message) {
-//   messageId: 
-//   }
-
-// const editBtn = document.querySelector(".editBtn")
-
-document.querySelector("#container").addEventListener("click", event => {
-  // debugger;
+document.querySelector("#chatbox").addEventListener("click", event => {
   if (event.target.id.startsWith("messageEdit--")) {
     let messageId = event.target.id.split("--")[1];
-    chatComp.makeEditBox()
-    // debugger
+    preloadMessage(messageId)
+    document.querySelector("#chatId").value = messageId
     // chatDOM.renderEditBox()
-    // TODO: CREATE EDIT TEXT BOX ON CLICK
     // TODO: PREPOPULATE BOX WITH CURRENT MESSAGE
     // API.getMessage(messageId).then(chatComp.makeEditBox)
     // TODO: CREATE "SAVE" AFFORDANCE
@@ -47,3 +58,8 @@ document.querySelector("#container").addEventListener("click", event => {
     // editBox.style.display = "block";
   }
 })
+
+function preloadMessage(messageId) {
+  let message = document.querySelector(`#message--${messageId}`).innerHTML
+  document.querySelector("#messageInput").value = message
+}

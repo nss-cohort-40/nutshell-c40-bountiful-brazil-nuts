@@ -21,10 +21,4 @@ const renderMessage = (message) => {
   newMessage.innerHTML += chatComp.makeMessageComponent(message);
 }
 
-// FUNC TO TARGET INPUT FIELD FOR THE EDIT(MAYBE PUT IF STATEMENT IN CLICK EVENT?)
-function renderEditBox(messageId) {
-  let messageToEdit = document.querySelector(".message");
-}
-
-
 export default { renderMessage, renderChatBox, renderAllMessages }

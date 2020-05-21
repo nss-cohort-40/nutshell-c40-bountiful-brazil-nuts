@@ -12,18 +12,21 @@ import chatAPI from "./chatData.js"
 import chatComp from "./chatComp.js"
 
 
-// REGISTRATION
+// Loading site content
 
 renderWelcome();
 tasksDOM.writeDOM()
 tasksDOM.writeTasks()
 renderForm();
+chatBox.renderChatBox()
+chatAPI.getAllMessages().then(chatBox.renderAllMessages);
 
 // HTML DOM component variables
 const container = document.getElementById("container")
 const welcomeWrapper = document.getElementById("welcomeWrapper")
 const tasksWrapper = document.getElementById("tasksWrapper")
 const registrationWrapper = document.getElementById("registrationWrapper")
+const chatWrapper = document.getElementById("chatWrapper")
 
 // EVENT LISTENER TO POPULATE REGISTRATION FORM - "REGISTER A NEW ACCOUNT" BUTTON
 container.addEventListener("click", event => {
@@ -42,6 +45,15 @@ const showElement = (element, boolean) => {
         element.style.display = "none"
     }
 }
+
+welcomeWrapper.addEventListener("click", event => {
+    if (event.target.id == "login") {
+        showElement(welcomeWrapper, false)
+        showElement(registrationWrapper, false)
+        showElement(tasksWrapper, true)
+        showElement(chatWrapper, true)
+    }
+})
 
 // EVENT LISTENER TO CREATE ACCOUNT AFTER COMPLETING REGISTRATION FORM - "REGISTER" BUTTON
 container.addEventListener("click", event => {
@@ -67,6 +79,7 @@ container.addEventListener("click", event => {
                             showElement(registrationWrapper, false)
                             // Add showElement functions here to display your section
                             showElement(tasksWrapper, true)
+                            showElement(chatWrapper, true)
                             // DO THIS IF ALL VALIDATION PASSES
                             return Data.addNewAccount(newAccount)
                         } else {
@@ -84,49 +97,43 @@ container.addEventListener("click", event => {
     }
 })
 
-welcomeWrapper.addEventListener("click", event => {
-    if (event.target.id == "login") {
-        showElement(welcomeWrapper, false)
-        showElement(registrationWrapper, false)
-        showElement(tasksWrapper, true)
-    }
-})
+
 
 // TASKS EVENT LISTENERS
 
-// const newTaskBtn = document.querySelector("#newTaskBtn")
-// const formView = document.querySelector("#formView")
+const newTaskBtn = document.querySelector("#newTaskBtn")
+const formView = document.querySelector("#formView")
 
 // // Hide button and reveal form
-// newTaskBtn.addEventListener("click", () => {
-//     event.preventDefault()
-//     newTaskBtn.style.display = "none"
-//     formView.style.display = "block"
-// })
+newTaskBtn.addEventListener("click", () => {
+    event.preventDefault()
+    newTaskBtn.style.display = "none"
+    formView.style.display = "block"
+})
 
 // // Task submit event listener for new task
-// document.querySelector("#submitBtn").addEventListener("click", () => {
-//     // Edit an existing task
-//     event.preventDefault()
-//     let taskObject = taskFunctions.createTaskObject()
-//     tasksAPI.saveTask(taskObject).then(tasksDOM.writeTasks)
+document.querySelector("#submitBtn").addEventListener("click", () => {
+    // Edit an existing task
+    event.preventDefault()
+    let taskObject = taskFunctions.createTaskObject()
+    tasksAPI.saveTask(taskObject).then(tasksDOM.writeTasks)
 
-//     newTaskBtn.style.display = "block"
-//     formView.style.display = "none"
-// })
+    newTaskBtn.style.display = "block"
+    formView.style.display = "none"
+})
 
 
 // // Task complete button event listener
-// document.querySelector("#tasks").addEventListener("click", event => {
-//     event.preventDefault()
-//     if (event.target.id.startsWith("completeTask--")) {
-//         let taskId = event.target.id.split("--")[1]
-//         tasksAPI.getTask(taskId).then(task => {
-//             task.completed = true
-//             tasksAPI.editTask(task.id, task).then(tasksDOM.writeTasks)
-//         })
-//     }
-// })
+document.querySelector("#tasks").addEventListener("click", event => {
+    event.preventDefault()
+    if (event.target.id.startsWith("completeTask--")) {
+        let taskId = event.target.id.split("--")[1]
+        tasksAPI.getTask(taskId).then(task => {
+            task.completed = true
+            tasksAPI.editTask(task.id, task).then(tasksDOM.writeTasks)
+        })
+    }
+})
 
 // Editing a task
 document.querySelector("#tasks").addEventListener("keypress", event => {
@@ -140,16 +147,14 @@ document.querySelector("#tasks").addEventListener("keypress", event => {
 })
 
 // // Deleting a task
-// document.querySelector("#tasks").addEventListener("click", event => {
-//     event.preventDefault()
-//     if (event.target.id.startsWith("deleteTask--")) {
-//         let taskId = event.target.id.split("--")[1]
-//         tasksAPI.deleteTask(taskId)
-//         document.querySelector(`#taskDiv--${taskId}`).remove()
-//     }
-// })
+document.querySelector("#tasks").addEventListener("click", event => {
+    event.preventDefault()
+    if (event.target.id.startsWith("deleteTask--")) {
+        let taskId = event.target.id.split("--")[1]
+        tasksAPI.deleteTask(taskId)
+        document.querySelector(`#taskDiv--${taskId}`).remove()
+    }
+})
 
 // CHATBOX
 
-chatBox.renderChatBox()
-chatAPI.getAllMessages().then(chatBox.renderAllMessages);

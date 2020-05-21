@@ -19,10 +19,10 @@
 
 const API = {
   getMessage(messageId) {
-    return fetch(`http://localhost:8088/messages/${messageId}`).then(response => response.json());
+    return fetch(`http://localhost:8088/messages/${messageId}?_expand=user`).then(response => response.json());
   },
   getAllMessages() {
-    return fetch("http://localhost:8088/messages").then(response => response.json())
+    return fetch("http://localhost:8088/messages?_expand=user").then(response => response.json())
   },
   submitMessage(message) {
     return fetch("http://localhost:8088/messages", {
@@ -43,8 +43,7 @@ const API = {
     }).then(response => response.json());
   },
   getUsername(userId) {
-    // USE EMBED(?) TO GET USER BY USERID
-    return fetch("http://localhost:8088/users").then(response => response.json());
+    return fetch("http://localhost:8088/users?_embed=messages").then(response => response.json());
   }
 }
 

@@ -20,6 +20,10 @@ display: none;
     /* flex-direction: column; */
 }
 
+
+#chatWrapper {
+    display: none
+}
 #chatbox {
     display: flex;
     flex-flow: column;
@@ -40,7 +44,8 @@ p.messages {
     height: 100%;
     width: 280px;
     overflow-wrap: break-word;
-
-#newTaskBtn {
-display: block;
 }
+
+/* #newTaskBtn {
+display: block;
+} */
