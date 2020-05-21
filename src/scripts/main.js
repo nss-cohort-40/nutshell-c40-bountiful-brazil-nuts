@@ -77,14 +77,10 @@ container.addEventListener("click", event => {
                             window.alert("Passwords do not match")
                         }
                     }
-                }).then ( response => response.json()).then( user => {
-                    sessionStorage.setItem('activeUser', user.id)
+                }).then ( response => response.json())
+                .then( user => {
+                    return sessionStorage.setItem('activeUser', user.id)
                 })
-                activeUser = parseInt(sessionStorage.getItem('activeUser'))
-                articlesData.getUsersArticles(activeUser)
-                    .then(user => {
-                        console.log(user);
-                    })
             } else {
                 // DO THIS IS IF ANY FORM FIELD IS BLANK
                 window.alert("Please complete your registration")
@@ -181,6 +177,7 @@ container.addEventListener("click", event => {
 
     // DELETE BUTTON - DELETES ARTICLE
     } else if (event.target.id.startsWith("deleteArticle")) {
+        activeUser = parseInt(sessionStorage.getItem('activeUser'))
         const articleId = event.target.id.split("--")[1];
         articlesData.deleteArticle(articleId)
         .then(() => {
@@ -193,6 +190,7 @@ container.addEventListener("click", event => {
     // SAVE ARTICLE BUTTON - ADDS OR EDITS ARTICLE
     } else if (event.target.id.startsWith("saveArticle")) {
         event.preventDefault();
+        activeUser = parseInt(sessionStorage.getItem('activeUser'))
         let hiddenArticleId = document.getElementById("articleId").value;
         let title = document.getElementById("articleTitle").value;
         let synopsis = document.getElementById("articleSynopsis").value;
