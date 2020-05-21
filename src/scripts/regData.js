@@ -1,11 +1,16 @@
-// FUNCTIONS FOR MANIPULATING USER DATA
+// Author: Kaleb Moran
+// Purpose: Functions for manipulating user data
+
 const Data = {
-    createAccountObj: function (username, email) {
+    // CREATES A USER ACCOUNT OBJECT
+    createAccountObj: function (username, email, password) {
        return { 
             username: username,
             email: email,
+            password: password
        }
     },
+    // FETCHES ALL ACCOUNT OBJECTS
     getAccounts () {
         return fetch("http://localhost:8088/users")
         .then(response => response.json())
@@ -14,6 +19,7 @@ const Data = {
         return fetch(`http://localhost:8088/users/${id}`)
         .then(response => response.json())
     },
+    // POSTS A NEW ACCOUNT OBJECT
     addNewAccount (newAccount) {
         return fetch("http://localhost:8088/users", {
             method: "POST",
