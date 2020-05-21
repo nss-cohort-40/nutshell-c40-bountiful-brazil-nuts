@@ -81,8 +81,11 @@ container.addEventListener("click", event => {
         }
     })
     
-
-
+welcomeWrapper.addEventListener("click", event => {
+    showElement(welcomeWrapper, false)
+    showElement(registrationWrapper, false)
+    showElement(tasksWrapper, true)
+})
 
 // TASKS EVENT LISTENERS
 
