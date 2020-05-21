@@ -9,7 +9,7 @@ function createEventDom () {
             <input type="text" name="" id="eventName" placeholder="Event Name">
         </div>
         <div class="form-group">
-            <label for="eventDate">Event Name</label>
+            <label for="eventDate">Event Date</label>
             <input type="date" name="" id="eventDate">
         </div>
         <div class="form-group">
