@@ -80,12 +80,15 @@ container.addEventListener("click", event => {
             }
         }
     })
+
+
     
 welcomeWrapper.addEventListener("click", event => {
     if (event.target.id == "login") {
-        showElement(welcomeWrapper, false)
-        showElement(registrationWrapper, false)
-        showElement(tasksWrapper, true)
+        welcomeWrapper.innerHTML += 
+        // showElement(welcomeWrapper, false)
+        // showElement(registrationWrapper, false)
+        // showElement(tasksWrapper, true)
     }
 })
 
