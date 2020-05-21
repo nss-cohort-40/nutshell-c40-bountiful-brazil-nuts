@@ -14,6 +14,7 @@ const createTask = object => {
 
 const taskDOM = () => {
     return `
+    <div id="tasksWrapper">
     <button type="button" id="newTaskBtn">New task</button>
     <form id="formView">
     <label for="">Task name </label>
@@ -26,6 +27,7 @@ const taskDOM = () => {
     </form>
     <div id="completedTasks"></div>
     <div id="tasks"></div>
+    </div>
     `
 }
 

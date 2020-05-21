@@ -84,6 +84,84 @@ container.addEventListener("click", event => {
         } else {
             window.alert("Please complete all fields");
         }
+
+// REGISTRATION
+
+renderWelcome();
+tasksDOM.writeDOM()
+tasksDOM.writeTasks()
+renderForm();
+
+// HTML DOM component variables
+const container = document.getElementById("container")
+const welcomeWrapper = document.getElementById("welcomeWrapper")
+const tasksWrapper = document.getElementById("tasksWrapper")
+const registrationWrapper = document.getElementById("registrationWrapper")
+
+// EVENT LISTENER TO POPULATE REGISTRATION FORM - "REGISTER A NEW ACCOUNT" BUTTON
+container.addEventListener("click", event => {
+    if (event.target.id.startsWith("populate--")) {
+        showElement(welcomeWrapper, false)
+        showElement(registrationWrapper, true)
+    }
+})
+
+// FUNCTIONS
+// This shows or hides an element based upon passing the element and a true or false
+const showElement = (element, boolean) => {
+    if (boolean == true) {
+        element.style.display = "block"
+    } else if (boolean == false) {
+        element.style.display = "none"
+    }
+}
+
+// EVENT LISTENER TO CREATE ACCOUNT AFTER COMPLETING REGISTRATION FORM - "REGISTER" BUTTON
+container.addEventListener("click", event => {
+    if (event.target.id.startsWith("register--")) {
+        event.preventDefault();
+        let username = document.getElementById("username").value;
+        let email = document.getElementById("emailAddress").value;
+        let password = document.getElementById("password").value;
+        let confirmPassword = document.getElementById("confirmPassword").value;
+        let newAccount = Data.createAccountObj(username, email);
+        if (username !== "" && email !== "" && password !== "" && confirmPassword !== "") {
+            // DO THIS IS IF ALL FORM FIELDS ARE FILLED
+            Data.getAccounts()
+                .then(users => {
+                    // MAKE USER EMAILS ARRAY
+                    let userEmails = users.map(user => user.email)
+                    if (userEmails.some((element) => element === email)) {
+                        // DO THIS IF USER EMAILS ARRAY INCLUDES EMAIL ALREADY
+                        window.alert("Email address already in use");
+                    } else {
+                        // DO THIS IF EMAIL NOT INCLUDED IN USER EMAIL ARRAY
+                        if (password === confirmPassword) {
+                            showElement(registrationWrapper, false)
+                            // Add showElement functions here to display your section
+                            showElement(tasksWrapper, true)
+                            // DO THIS IF ALL VALIDATION PASSES
+                            return Data.addNewAccount(newAccount)
+                        } else {
+                            // DO THIS IF PASSWORD AND CONFIRM PASSWORD DON'T MATCH
+                            window.alert("Passwords do not match")
+                        }
+                    }
+                }).then ( response => response.json()).then( user => {
+                    sessionStorage.setItem('activeUser', user.id)
+                })
+            } else {
+                // DO THIS IS IF ANY FORM FIELD IS BLANK
+                window.alert("Please complete your registration")
+            }
+        }
+    })
+    
+welcomeWrapper.addEventListener("click", event => {
+    if (event.target.id == "login") {
+        showElement(welcomeWrapper, false)
+        showElement(registrationWrapper, false)
+        showElement(tasksWrapper, true)
     }
 });
 
@@ -133,11 +211,6 @@ container.addEventListener("click", event => {
 //     }
 // })
 
-// TASKS EVENT LISTENERS
-// Loading list content
-// tasksDOM.writeDOM()
-// tasksDOM.writeTasks()
-
 // const newTaskBtn = document.querySelector("#newTaskBtn")
 // const formView = document.querySelector("#formView")
 
@@ -172,17 +245,16 @@ container.addEventListener("click", event => {
 //     }
 // })
 
-// // Editing a task
-// document.querySelector("#tasks").addEventListener("keypress", event => {
-//     event.preventDefault()
-//     if (event.target.id.startsWith("taskName--")) {
-//         let taskToEdit = event.target.id.split("--")[1]
-//         if (event.charCode == 13) {
-//             event.preventDefault()
-//             taskFunctions.editTask(taskToEdit)
-//         }
-//     }
-// })
+// Editing a task
+document.querySelector("#tasks").addEventListener("keypress", event => {
+    if (event.target.id.startsWith("taskName--")) {
+        let taskToEdit = event.target.id.split("--")[1]
+        if (event.charCode == 13) {
+            event.preventDefault()
+            taskFunctions.editTask(taskToEdit)
+        }
+    }
+})
 
 // // Deleting a task
 // document.querySelector("#tasks").addEventListener("click", event => {
@@ -193,4 +265,3 @@ container.addEventListener("click", event => {
 //         document.querySelector(`#taskDiv--${taskId}`).remove()
 //     }
 // })
-
