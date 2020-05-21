@@ -61,8 +61,8 @@ container.addEventListener("click", event => {
                     } else {
                         // DO THIS IF EMAIL NOT INCLUDED IN USER EMAIL ARRAY
                         if (password === confirmPassword) {
-                            showElement(tasksWrapper, true)
                             showElement(registrationWrapper, false)
+                            // Add showElement functions here to display your section
                             // DO THIS IF ALL VALIDATION PASSES
                             return Data.addNewAccount(newAccount)
                         } else {
