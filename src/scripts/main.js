@@ -70,6 +70,7 @@ container.addEventListener("click", event => {
                             showElement(registrationWrapper, false)
                             // Add showElement functions here to display your section
                             showElement(tasksWrapper, true)
+                            showElement(newEventButton, true)
                             // DO THIS IF ALL VALIDATION PASSES
                             return Data.addNewAccount(newAccount)
                         } else {
