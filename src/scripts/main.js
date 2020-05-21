@@ -40,9 +40,6 @@ const showElement = (element, boolean) => {
     }
 }
 
-
-
-
 // EVENT LISTENER TO CREATE ACCOUNT AFTER COMPLETING REGISTRATION FORM - "REGISTER" BUTTON
 container.addEventListener("click", event => {
     if (event.target.id.startsWith("register--")) {
@@ -75,6 +72,7 @@ container.addEventListener("click", event => {
                     }
                 }).then ( response => response.json()).then( user => {
                     sessionStorage.setItem('activeUser', user.id)
+                    console.log(sessionStorage.getItem('activeUser'))
                 })
             } else {
                 // DO THIS IS IF ANY FORM FIELD IS BLANK
@@ -83,7 +81,7 @@ container.addEventListener("click", event => {
         }
     })
     
-console.log(sessionStorage.getItem('activeUser'))
+
 
 
 // TASKS EVENT LISTENERS
@@ -125,7 +123,6 @@ document.querySelector("#tasks").addEventListener("click", event => {
 
 // Editing a task
 document.querySelector("#tasks").addEventListener("keypress", event => {
-    event.preventDefault()
     if (event.target.id.startsWith("taskName--")) {
         let taskToEdit = event.target.id.split("--")[1]
         if (event.charCode == 13) {

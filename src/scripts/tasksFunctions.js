@@ -15,8 +15,11 @@ const createTaskObject = () => {
         // Implement user Id
         task,
         dueDate,
-        completed
+        completed,
+        userId: parseInt(sessionStorage.getItem("activeUser"))
     }
+    console.log(taskObject);
+    
     return taskObject
 }
 
@@ -35,7 +38,7 @@ const renderTasks = tasks => {
     let element = document.querySelector("#tasks");
     tasks.sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate))
     tasks.forEach(task => {
-        if (task.completed == false) {
+        if (task.completed == false && task.userId == sessionStorage.getItem("activeUser")) {
             element.innerHTML += taskComponent.createTask(task)
         }
     });
