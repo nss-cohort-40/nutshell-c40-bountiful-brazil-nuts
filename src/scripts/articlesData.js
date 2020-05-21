@@ -1,6 +1,6 @@
 // Author: Kaleb Moran
 // Purpose: Functions for accessing and manipulating articles data
-
+import articlesDOM from "./articlesDOM.js"
 
 // FUNCTIONS FOR MANIPULATING USER DATA
 const articlesData = {
@@ -32,6 +32,9 @@ const articlesData = {
     getUsersArticles (activeUser) {
         return fetch(`http://localhost:8088/users/${activeUser}?_embed=articles`)
         .then(response => response.json())
+        .then(user => {
+            return articlesDOM.renderArticleList(user);
+        })
     },
 
     // ADD NEW ARTICLE TO DATABASE

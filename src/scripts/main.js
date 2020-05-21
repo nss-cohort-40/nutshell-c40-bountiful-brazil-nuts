@@ -11,8 +11,6 @@ import articlesDOM from "./articlesDOM.js"
 import articlesComp from "./articlesComp.js"
 import articlesData from "./articlesData.js"
 
-// REGISTRATION
-
 renderWelcome();
 tasksDOM.writeDOM()
 tasksDOM.writeTasks()
@@ -26,6 +24,8 @@ const tasksWrapper = document.getElementById("tasksWrapper")
 const articlesWrapper = document.getElementById("articlesWrapper")
 const registrationWrapper = document.getElementById("registrationWrapper")
 let activeUser = 0;
+
+// REGISTRATION
 
 // EVENT LISTENER TO POPULATE REGISTRATION FORM - "REGISTER A NEW ACCOUNT" BUTTON
 container.addEventListener("click", event => {
@@ -97,9 +97,6 @@ welcomeWrapper.addEventListener("click", event => {
         showElement(tasksWrapper, true)
         showElement(articlesWrapper, true)
         articlesData.getUsersArticles(activeUser)
-        .then(user => {
-            return articlesDOM.renderArticleList(user);
-        })
     }
 })
 
@@ -183,9 +180,6 @@ container.addEventListener("click", event => {
         .then(() => {
             return articlesData.getUsersArticles(activeUser)
         })
-        .then(user => {
-            return articlesDOM.renderArticleList(user);
-        })
     
     // SAVE ARTICLE BUTTON - ADDS OR EDITS ARTICLE
     } else if (event.target.id.startsWith("saveArticle")) {
@@ -209,20 +203,14 @@ container.addEventListener("click", event => {
                 })
                 .then(article => {
                     return articlesData.getUsersArticles(article.userId)
-                })
-                .then(user => {
-                    return articlesDOM.renderArticleList(user);
-                })
+                });
             
             // ADDS NEW ARTICLE
             } else if (hiddenArticleId == "") {
                 articlesData.addNewArticle(articleObj)
                 .then(() => {
                     return articlesData.getUsersArticles(activeUser)
-                })
-                .then(user => {
-                    return articlesDOM.renderArticleList(user);
-                })
+                });
             } 
 
         // DO THIS IF ANY FORM FIELD IS BLANK
