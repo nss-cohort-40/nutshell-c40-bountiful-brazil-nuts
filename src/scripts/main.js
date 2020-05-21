@@ -63,6 +63,7 @@ container.addEventListener("click", event => {
                         if (password === confirmPassword) {
                             showElement(registrationWrapper, false)
                             // Add showElement functions here to display your section
+                            showElement(tasksWrapper, true)
                             // DO THIS IF ALL VALIDATION PASSES
                             return Data.addNewAccount(newAccount)
                         } else {
@@ -72,7 +73,6 @@ container.addEventListener("click", event => {
                     }
                 }).then ( response => response.json()).then( user => {
                     sessionStorage.setItem('activeUser', user.id)
-                    console.log(sessionStorage.getItem('activeUser'))
                 })
             } else {
                 // DO THIS IS IF ANY FORM FIELD IS BLANK

@@ -18,8 +18,6 @@ const createTaskObject = () => {
         completed,
         userId: parseInt(sessionStorage.getItem("activeUser"))
     }
-    console.log(taskObject);
-    
     return taskObject
 }
 
