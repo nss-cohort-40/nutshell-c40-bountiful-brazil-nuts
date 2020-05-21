@@ -20,6 +20,11 @@ display: block;
 }
 
 /* Articles elements */
-#articlesWrapper {
+#articlesWrapper { 
     display: none;
+}
+
+/* Login elements */
+#loginWrapper {
+    display: none
 }

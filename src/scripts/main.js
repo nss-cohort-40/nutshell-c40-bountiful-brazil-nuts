@@ -7,7 +7,7 @@ import renderWelcome from "./welcDOM.js"
 import renderForm from "./regDOM.js"
 import regData from "./regData.js"
 import makeRegistrationForm from "./regComp.js"
-import loginForm from "./loginComp.js"
+import loginDOM from "./loginDOM.js"
 import articlesDOM from "./articlesDOM.js"
 import articlesComp from "./articlesComp.js"
 import articlesData from "./articlesData.js"
@@ -15,8 +15,10 @@ import articlesData from "./articlesData.js"
 renderWelcome();
 tasksDOM.writeDOM()
 tasksDOM.writeTasks()
+loginDOM.renderDOM()
 articlesDOM.renderArticleContainer();
 renderForm();
+
 
 // HTML DOM component variables
 const container = document.getElementById("container")
@@ -24,6 +26,7 @@ const welcomeWrapper = document.getElementById("welcomeWrapper")
 const tasksWrapper = document.getElementById("tasksWrapper")
 const articlesWrapper = document.getElementById("articlesWrapper")
 const registrationWrapper = document.getElementById("registrationWrapper")
+const loginWrapper = document.getElementById("loginWrapper")
 let activeUser = 0;
 
 // REGISTRATION
@@ -90,16 +93,36 @@ container.addEventListener("click", event => {
     })
 
 
-    
 welcomeWrapper.addEventListener("click", event => {
     if (event.target.id == "login") {
+        showElement(loginWrapper, true)
+    } 
+    if (event.target.id == "submit") {
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
-        console.log(activeUser)
-        showElement(welcomeWrapper, false)
-        showElement(registrationWrapper, false)
-        showElement(tasksWrapper, true)
-        showElement(articlesWrapper, true)
-        articlesData.getUsersArticles(activeUser)
+        let username = document.querySelector("#loginUsername").value
+        let password = document.querySelector("#loginPassword").value
+        if (username == "" || password == "") {
+            alert("Please enter a username and password.")
+        } else {
+            regData.getAccounts().then( accounts => {
+                accounts.forEach(account => {
+                    if (username == account.username && password == account.password) {
+                        sessionStorage.clear()
+                        sessionStorage.setItem("activeUser", account.id)
+                        activeUser = parseInt(sessionStorage.getItem("activeUser"))
+                        showElement(welcomeWrapper, false)
+                        showElement(registrationWrapper, false)
+                        showElement(tasksWrapper, true)
+                        showElement(articlesWrapper, true)
+                        articlesData.getUsersArticles(activeUser)
+                    }
+                    else {
+                        alert("No account found.")
+                    }
+                });
+            })
+        }
+
     }
 })
 
