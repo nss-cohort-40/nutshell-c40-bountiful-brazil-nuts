@@ -1,12 +1,20 @@
-#formView {
-    display: none;
-}
-
-#newTaskBtn {
-    display: block;
-}
-
+/* Registration elements */
 #registration-form {
     display: flex;
     flex-direction: column;
+}
+#registrationWrapper {
+    display: none
+}
+
+/* Tasks elements */
+#tasksWrapper {
+    display: none;
+}
+#formView {
+display: none;
+}
+
+#newTaskBtn {
+display: block;
 }

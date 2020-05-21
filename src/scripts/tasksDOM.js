@@ -6,7 +6,7 @@ import tasksAPI from "./tasksData.js"
 import taskFunctions from "./tasksFunctions.js"
 
 function writeDOM () {
-    document.querySelector("#container").innerHTML = taskComponent.taskDOM()
+    document.querySelector("#container").innerHTML += taskComponent.taskDOM()
 }
 
 function writeTasks () {
