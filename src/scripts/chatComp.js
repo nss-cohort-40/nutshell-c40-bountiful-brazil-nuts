@@ -1,11 +1,23 @@
-const makeMessageComponent = (username, message) => {
-  return `<p class="message">${username}: ${message}</p>
-  <button id="edit--${message.id}" class="editBtn">Edit</button>`
+// Authors: Tanner Brainard & Zane Bliss
+
+const makeMessageComponent = (message) => {
+  return `
+  <p class="message">${"Username"}: ${message.content}</p>
+  <button id="messageEdit--${message.id}" class="editBtn">Edit</button>`
 }
 
-function makeChatBoxAppear() {
-  let chatBox = document.getElementById("newMessage")
-  chatBox.setAttribute("type", "text")
+const makeChatContainer = () => {
+  return `
+  <section id="chatbox">
+  <input type="text" id="newMessage"></input>
+  <p class="messages"></p>
+  </section>
+  `
 }
 
-export default { makeMessageComponent, makeChatBoxAppear }
+const makeEditBox = () => {
+  return `<input type="text" id="editBox"></input>
+  <button id="saveEditBtn" class="saveBtn">Save</button>`
+}
+
+export default { makeMessageComponent, makeChatContainer, makeEditBox }

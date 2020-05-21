@@ -1,23 +1,30 @@
-import comp from "./chatComp.js";
-import API from "./chatData.js"
+// Author: Tanner Brainard
+import chatComp from "./chatComp.js";
 
-// TODO: Only render new message after submitMessage called
-// TODO: Only render messages sent after time of login
 
+// RENDERS CHATBOX TO DOM
 function renderChatBox() {
-  document.getElementById("container").innerHTML += comp.makeChatBox();
+  document.getElementById("container").innerHTML += chatComp.makeChatContainer();
 }
 
-// FUNC TO RENDER MESSAGES TO CHATBOX
+// RENDERS ALLMESSAGES ON CHATBOX LOAD
+const renderAllMessages = (messages) => {
+  let messageHistory = document.querySelector(".messages")
+  messages.forEach(message => {
+    messageHistory.innerHTML += chatComp.makeMessageComponent(message);
+  })
+}
+
+// RENDERS NEWMESSAGE TO CHATBOX(ENTERED BY USER)
 const renderMessage = (message) => {
-  let chatHistory = document.querySelector("#chatBox");
-  // messages.forEach(message => {
-  let content = message.content
-  let userId = message.userId
-  // let username = API.getUsername(userId).then()
-  chatHistory.innerHTML += comp.makeMessageComponent(userId, content);
-  // })
+  let newMessage = document.querySelector(".messages");
+  newMessage.innerHTML += chatComp.makeMessageComponent(message);
 }
 
+// FUNC TO TARGET INPUT FIELD FOR THE EDIT(MAYBE PUT IF STATEMENT IN CLICK EVENT?)
+// function renderEditBox() {
+//   document.querySelector()
+// }
 
-export default renderMessage
+
+export default { renderMessage, renderChatBox, renderAllMessages, renderEditBox }

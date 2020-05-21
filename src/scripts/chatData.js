@@ -21,6 +21,9 @@ const API = {
   getMessage(messageId) {
     return fetch(`http://localhost:8088/messages/${messageId}`).then(response => response.json());
   },
+  getAllMessages() {
+    return fetch("http://localhost:8088/messages").then(response => response.json())
+  },
   submitMessage(message) {
     return fetch("http://localhost:8088/messages", {
       method: "POST",
@@ -28,6 +31,15 @@ const API = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(message),
+    }).then(response => response.json());
+  },
+  editMessage(id, obj) {
+    return fetch(`http://localhost:8088/messages/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(obj)
     }).then(response => response.json());
   },
   getUsername(userId) {
