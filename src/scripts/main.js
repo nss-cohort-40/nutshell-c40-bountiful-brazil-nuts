@@ -82,9 +82,11 @@ container.addEventListener("click", event => {
     })
     
 welcomeWrapper.addEventListener("click", event => {
-    showElement(welcomeWrapper, false)
-    showElement(registrationWrapper, false)
-    showElement(tasksWrapper, true)
+    if (event.target.id == "login") {
+        showElement(welcomeWrapper, false)
+        showElement(registrationWrapper, false)
+        showElement(tasksWrapper, true)
+    }
 })
 
 // TASKS EVENT LISTENERS
