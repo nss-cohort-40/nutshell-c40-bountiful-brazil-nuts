@@ -27,4 +27,4 @@ const renderMessage = (message) => {
 // }
 
 
-export default { renderMessage, renderChatBox, renderAllMessages, renderEditBox }
+export default { renderMessage, renderChatBox, renderAllMessages }

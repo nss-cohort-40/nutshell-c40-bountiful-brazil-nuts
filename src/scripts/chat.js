@@ -35,8 +35,8 @@ document.querySelector("#container").addEventListener("click", event => {
   if (event.target.id.startsWith("messageEdit--")) {
     let messageId = event.target.id.split("--")[1];
     chatComp.makeEditBox()
-    debugger
-    chatDOM.renderEditBox()
+    // debugger
+    // chatDOM.renderEditBox()
     // TODO: CREATE EDIT TEXT BOX ON CLICK
     // TODO: PREPOPULATE BOX WITH CURRENT MESSAGE
     // API.getMessage(messageId).then(chatComp.makeEditBox)
