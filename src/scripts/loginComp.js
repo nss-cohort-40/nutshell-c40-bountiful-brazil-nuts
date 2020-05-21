@@ -1,8 +1,13 @@
 const loginForm = () => {
     return `
     <div id="loginForm">
-    <input type="text" id="username">
-    <input type="text" id="password">
+    <label>Username: </label>
+    <input type="text" id="loginUsername">
+    <br>
+    <label>Password: </label>
+    <input type="password" id="loginPassword">
     </div>
     `
 }
+
+export default { loginForm }

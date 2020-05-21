@@ -5,9 +5,9 @@ import regDOM from "./regDOM.js"
 import makeWelcome from "./welcComp.js"
 import renderWelcome from "./welcDOM.js"
 import renderForm from "./regDOM.js"
-import Data from "./regData.js"
+import regData from "./regData.js"
 import makeRegistrationForm from "./regComp.js"
-
+import loginForm from "./loginComp.js"
 
 // REGISTRATION
 
@@ -85,7 +85,14 @@ container.addEventListener("click", event => {
     
 welcomeWrapper.addEventListener("click", event => {
     if (event.target.id == "login") {
-        welcomeWrapper.innerHTML += 
+        welcomeWrapper.innerHTML += loginForm.loginForm()
+        let username = document.getElementById("userName")
+        let password = document.getElementById("loginPassword")
+        regData.getAccounts().then( accounts => {
+            accounts.forEach(account => {
+                console.log(account);
+            });
+        })
         // showElement(welcomeWrapper, false)
         // showElement(registrationWrapper, false)
         // showElement(tasksWrapper, true)
