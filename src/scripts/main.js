@@ -7,18 +7,17 @@ import renderWelcome from "./welcDOM.js"
 import renderForm from "./regDOM.js"
 import Data from "./regData.js"
 import makeRegistrationForm from "./regComp.js"
-<<<<<<< HEAD
+
+// Events
 import createEventDom from "./eventsComp.js"
 import APIevents from "./eventsData.js"
 import eventsDOM from "./eventsDOM.js"
 
 
 // REGISTRATION
-=======
 import articlesDOM from "./articlesDOM.js"
 import articlesComp from "./articlesComp.js"
 import articlesData from "./articlesData.js"
->>>>>>> e0a0955494d40bfe12ca67b374bb9d577de97e20
 
 renderWelcome();
 tasksDOM.writeDOM()
@@ -33,14 +32,11 @@ const welcomeWrapper = document.getElementById("welcomeWrapper")
 const tasksWrapper = document.getElementById("tasksWrapper")
 const articlesWrapper = document.getElementById("articlesWrapper")
 const registrationWrapper = document.getElementById("registrationWrapper")
-<<<<<<< HEAD
 const newEventButton = document.getElementById("newEventButton")
 const eventsContainer = document.getElementById("eventsContainer")
-=======
 let activeUser = 0;
 
 // REGISTRATION
->>>>>>> e0a0955494d40bfe12ca67b374bb9d577de97e20
 
 // EVENT LISTENER TO POPULATE REGISTRATION FORM - "REGISTER A NEW ACCOUNT" BUTTON
 container.addEventListener("click", event => {
@@ -84,11 +80,8 @@ container.addEventListener("click", event => {
                             showElement(registrationWrapper, false)
                             // Add showElement functions here to display your section
                             showElement(tasksWrapper, true)
-<<<<<<< HEAD
                             showElement(newEventButton, true)
-=======
                             showElement(articlesWrapper, true)
->>>>>>> e0a0955494d40bfe12ca67b374bb9d577de97e20
                             // DO THIS IF ALL VALIDATION PASSES
                             return Data.addNewAccount(newAccount)
                         } else {
@@ -114,12 +107,9 @@ welcomeWrapper.addEventListener("click", event => {
         showElement(welcomeWrapper, false)
         showElement(registrationWrapper, false)
         showElement(tasksWrapper, true)
-<<<<<<< HEAD
         showElement(newEventButton, true)
-=======
         showElement(articlesWrapper, true)
         articlesData.getUsersArticles(activeUser)
->>>>>>> e0a0955494d40bfe12ca67b374bb9d577de97e20
     }
 })
 
