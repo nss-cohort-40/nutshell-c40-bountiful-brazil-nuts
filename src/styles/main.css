@@ -1,9 +1,18 @@
-#formView {
-    display: none;
+/* Registration elements */
+#registration-form {
+    display: flex;
+    flex-direction: column;
+}
+#registrationWrapper {
+    display: none
 }
 
-#newTaskBtn {
-    display: block;
+/* Tasks elements */
+#tasksWrapper {
+    display: none;
+}
+#formView {
+display: none;
 }
 
 #registration-form {
@@ -32,4 +41,6 @@ p.messages {
     width: 280px;
     overflow-wrap: break-word;
 
+#newTaskBtn {
+display: block;
 }

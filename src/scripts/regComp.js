@@ -1,6 +1,7 @@
 // REGISTRATION FORM COMPONENT
 function makeRegistrationForm () {
     return `
+    <div id="registrationWrapper">
     <h1>Welcome to Nutshell</h1>
     <form action="">
       <fieldset id="registration-form">
@@ -18,6 +19,7 @@ function makeRegistrationForm () {
         <button id="register--account">Register</button>
       </fieldset>
     </form>
+    </div>
     `
 }
 

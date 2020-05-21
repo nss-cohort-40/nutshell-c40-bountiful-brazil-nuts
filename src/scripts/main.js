@@ -13,16 +13,35 @@ import chatComp from "./chatComp.js"
 
 
 // REGISTRATION
-const container = document.getElementById("container")
 
-// renderWelcome();
+renderWelcome();
+tasksDOM.writeDOM()
+tasksDOM.writeTasks()
+renderForm();
+
+// HTML DOM component variables
+const container = document.getElementById("container")
+const welcomeWrapper = document.getElementById("welcomeWrapper")
+const tasksWrapper = document.getElementById("tasksWrapper")
+const registrationWrapper = document.getElementById("registrationWrapper")
 
 // EVENT LISTENER TO POPULATE REGISTRATION FORM - "REGISTER A NEW ACCOUNT" BUTTON
 container.addEventListener("click", event => {
     if (event.target.id.startsWith("populate--")) {
-        renderForm();
+        showElement(welcomeWrapper, false)
+        showElement(registrationWrapper, true)
     }
 })
+
+// FUNCTIONS
+// This shows or hides an element based upon passing the element and a true or false
+const showElement = (element, boolean) => {
+    if (boolean == true) {
+        element.style.display = "block"
+    } else if (boolean == false) {
+        element.style.display = "none"
+    }
+}
 
 // EVENT LISTENER TO CREATE ACCOUNT AFTER COMPLETING REGISTRATION FORM - "REGISTER" BUTTON
 container.addEventListener("click", event => {
@@ -45,14 +64,18 @@ container.addEventListener("click", event => {
                     } else {
                         // DO THIS IF EMAIL NOT INCLUDED IN USER EMAIL ARRAY
                         if (password === confirmPassword) {
+                            showElement(registrationWrapper, false)
+                            // Add showElement functions here to display your section
+                            showElement(tasksWrapper, true)
                             // DO THIS IF ALL VALIDATION PASSES
-                            container.innerHTML = "";
-                            return Data.addNewAccount(newAccount);
+                            return Data.addNewAccount(newAccount)
                         } else {
                             // DO THIS IF PASSWORD AND CONFIRM PASSWORD DON'T MATCH
                             window.alert("Passwords do not match")
                         }
                     }
+                }).then(response => response.json()).then(user => {
+                    sessionStorage.setItem('activeUser', user.id)
                 })
         } else {
             // DO THIS IS IF ANY FORM FIELD IS BLANK
@@ -61,10 +84,15 @@ container.addEventListener("click", event => {
     }
 })
 
+welcomeWrapper.addEventListener("click", event => {
+    if (event.target.id == "login") {
+        showElement(welcomeWrapper, false)
+        showElement(registrationWrapper, false)
+        showElement(tasksWrapper, true)
+    }
+})
+
 // TASKS EVENT LISTENERS
-// Loading list content
-// tasksDOM.writeDOM()
-// tasksDOM.writeTasks()
 
 // const newTaskBtn = document.querySelector("#newTaskBtn")
 // const formView = document.querySelector("#formView")
@@ -100,17 +128,16 @@ container.addEventListener("click", event => {
 //     }
 // })
 
-// // Editing a task
-// document.querySelector("#tasks").addEventListener("keypress", event => {
-//     event.preventDefault()
-//     if (event.target.id.startsWith("taskName--")) {
-//         let taskToEdit = event.target.id.split("--")[1]
-//         if (event.charCode == 13) {
-//             event.preventDefault()
-//             taskFunctions.editTask(taskToEdit)
-//         }
-//     }
-// })
+// Editing a task
+document.querySelector("#tasks").addEventListener("keypress", event => {
+    if (event.target.id.startsWith("taskName--")) {
+        let taskToEdit = event.target.id.split("--")[1]
+        if (event.charCode == 13) {
+            event.preventDefault()
+            taskFunctions.editTask(taskToEdit)
+        }
+    }
+})
 
 // // Deleting a task
 // document.querySelector("#tasks").addEventListener("click", event => {
