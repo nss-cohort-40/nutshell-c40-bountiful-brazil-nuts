@@ -1,3 +1,6 @@
+// Author: Kaleb Moran
+// Purpose: HTML component for registration form
+
 // REGISTRATION FORM COMPONENT
 function makeRegistrationForm () {
     return `

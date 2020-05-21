@@ -1,6 +1,8 @@
+// Author: Kaleb Moran
+// Purpose: Function to render welcome message to the DOM
+
 import makeWelcome from "./welcComp.js"
 
-// FUNCTION TO RENDER WELCOME MESSAGE TO DOM
 function renderWelcome () {
     document.getElementById("container").innerHTML = makeWelcome();
 }
