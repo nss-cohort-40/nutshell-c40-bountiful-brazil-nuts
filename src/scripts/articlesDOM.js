@@ -6,7 +6,7 @@ const articlesDOM = {
 
     // FUNCTION TO RENDER ARTICLE CONTAINER
     renderArticleContainer () {
-        document.getElementById("container").innerHTML = articlesComp.makeArticleContainer();
+        document.getElementById("container").innerHTML += articlesComp.makeArticleContainer();
     },
 
     // FUNCTION TO RENDER NEW/EDIT ARTICLE FORM
@@ -15,9 +15,9 @@ const articlesDOM = {
     },
 
     // FUNCTION TO RENDER ARTICLE LIST
-    renderArticleList (articles) {
+    renderArticleList (user) {
         document.getElementById("articleList-container").innerHTML = "";
-        articles.sort((a, b) => {
+        user.articles.sort((a, b) => {
             parseInt(a.timestamp);
             parseInt(b.timestamp);
             if (a.timestamp > b.timestamp) {

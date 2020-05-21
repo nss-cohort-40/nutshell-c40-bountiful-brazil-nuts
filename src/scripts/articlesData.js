@@ -9,9 +9,10 @@ const articlesData = {
     createArticleObj: function (title, synopsis, url) {
        return { 
             timestamp: Date.now(),
-            title: title,
-            synopsis: synopsis,
-            url: url
+            title,
+            synopsis,
+            url,
+            userId: parseInt(sessionStorage.getItem("activeUser"))
        }
     },
 
@@ -24,6 +25,12 @@ const articlesData = {
     // FETCH SPECIFIC ARTICLE
     getArticle (articleId) {
         return fetch(`http://localhost:8088/articles/${articleId}`)
+        .then(response => response.json())
+    },
+
+    // FETCH SPECIFIC USER'S ARTICLES
+    getUsersArticles (activeUser) {
+        return fetch(`http://localhost:8088/users/${activeUser}?_embed=articles`)
         .then(response => response.json())
     },
 
@@ -47,7 +54,8 @@ const articlesData = {
             timestamp: articleObj.timestamp,
             title,
             synopsis,
-            url
+            url,
+            userId: articleObj.userId
         }
         return fetch(`http://localhost:8088/articles/${articleObj.id}`, {
             method: "PUT",

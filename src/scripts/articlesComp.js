@@ -6,7 +6,7 @@ const articlesComp = {
     // NEW ARTICLE BUTTON
     makeArticleContainer () {
         return `
-        <section id="articles-container">
+        <section id="articlesWrapper">
             <h2>Articles</h2>
             <button id="newArtBtn">New Article</button>
 

@@ -1,9 +1,10 @@
 // FUNCTIONS FOR MANIPULATING USER DATA
 const Data = {
-    createAccountObj: function (username, email) {
+    createAccountObj: function (username, email, password) {
        return { 
             username: username,
             email: email,
+            password: password
        }
     },
     getAccounts () {
