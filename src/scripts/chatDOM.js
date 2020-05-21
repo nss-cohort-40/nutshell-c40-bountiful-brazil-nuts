@@ -22,9 +22,10 @@ const renderMessage = (message) => {
 }
 
 // FUNC TO TARGET INPUT FIELD FOR THE EDIT(MAYBE PUT IF STATEMENT IN CLICK EVENT?)
-// function renderEditBox() {
-//   document.querySelector()
-// }
+function renderEditBox(messageId) {
+  let messageToEdit = document.querySelector(".message");
+
+}
 
 
 export default { renderMessage, renderChatBox, renderAllMessages }
