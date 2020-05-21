@@ -156,11 +156,14 @@ document.querySelector("#tasks").addEventListener("click", event => {
 })
 
 /* -------- START Events Part --- Author: Felipe Moura ------- */
-let userID = 1
-// button pressed
-newEventButton.addEventListener("click", () => {
+let userID = sessionStorage.getItem("activeUser")
+console.log(userID)
+
+// button pressed so show eventsContainer and render the events of the user
+newEventButton.addEventListener("click", async () => {
     showElement(newEventButton, false);
     showElement(eventsContainer, true);
+    await eventsDOM.renderOrganizedEvents(userID, document.getElementById("renderEvents"))
 })
 
 // POST/PUT event handler
@@ -184,7 +187,7 @@ document.getElementById("submitEventButton").addEventListener("click", async (ev
         }
         else {
             await APIevents.postEvent(newEvent)
-            await eventsDOM.renderOrganizedEvents(document.getElementById("renderEvents"))
+            await eventsDOM.renderOrganizedEvents(userID, document.getElementById("renderEvents"))
 
             // Clean Form Fields
             eventsDOM.updateFormField()
@@ -198,7 +201,7 @@ document.getElementById("submitEventButton").addEventListener("click", async (ev
         } 
         else {
             await APIevents.editEvent(+eventHiddenId, newEvent)
-            await eventsDOM.renderOrganizedEvents(document.getElementById("renderEvents"))
+            await eventsDOM.renderOrganizedEvents(userID, document.getElementById("renderEvents"))
 
             // Clean form fields
             eventsDOM.updateFormField()
@@ -222,7 +225,7 @@ document.getElementById("container").addEventListener("click", async (e) => {
         // DELETE Button pressed: actually delete event
         else if (action == "delete") {
             await APIevents.deleteEvent(eventID)
-            await eventsDOM.renderOrganizedEvents(document.getElementById("renderEvents"))
+            await eventsDOM.renderOrganizedEvents(userID, document.getElementById("renderEvents"))
         }
     }
 })
