@@ -48,4 +48,9 @@ p.messages {
 
 /* #newTaskBtn {
 display: block;
-} */
+}
+
+/* Articles elements */
+#articlesWrapper {
+    display: none;
+}
