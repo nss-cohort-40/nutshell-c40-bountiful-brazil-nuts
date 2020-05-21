@@ -5,7 +5,8 @@ const APIevents = {
 
     // GET all events
     async getEvents(id) {
-        let events = await fetch(`http://localhost:8088/events?userId=${id}`).then(data => data.json())
+        let events = await fetch(`http://localhost:8088/events/?userID=${id}`).then(data => data.json())
+        console.log(events)
         return events
     },
 
