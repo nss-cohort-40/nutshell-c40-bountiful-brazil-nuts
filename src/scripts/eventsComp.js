@@ -2,7 +2,7 @@
 // Propose: Render event tab on DOM
 
 function createEventDom () {
-    document.getElementById("container").innerHTML +=  `<div id="events-parent-div"
+    document.getElementById("container").innerHTML +=  `<div id="events-parent-div">
     <button id="newEventButton" style="display: none;">New Event</button>
     <div id="eventsContainer" style="display: none;">
     <div id="registerEventContainer">
