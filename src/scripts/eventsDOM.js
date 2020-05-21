@@ -75,7 +75,7 @@ const eventsDOM = {
 
     // Sort events by date and so render them
     async renderOrganizedEvents (id, target) {
-        let events = await APIevents.getEvents(id)
+        let events = await APIevents.getEvents(+id)
 
         events.sort((a, b) => {
             let dateA = new Date(a.date)
