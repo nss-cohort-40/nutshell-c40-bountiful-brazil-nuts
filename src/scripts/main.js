@@ -10,6 +10,8 @@ import makeRegistrationForm from "./regComp.js"
 import articlesDOM from "./articlesDOM.js"
 import articlesComp from "./articlesComp.js"
 import articlesData from "./articlesData.js"
+import makeLogoutButton from "./logoutComp.js"
+import renderLogoutButton from "./logoutDOM.js"
 
 renderWelcome();
 tasksDOM.writeDOM()
@@ -70,6 +72,7 @@ container.addEventListener("click", event => {
                             // Add showElement functions here to display your section
                             showElement(tasksWrapper, true)
                             showElement(articlesWrapper, true)
+                            renderLogoutButton();
                             // DO THIS IF ALL VALIDATION PASSES
                             return Data.addNewAccount(newAccount)
                         } else {
@@ -87,6 +90,13 @@ container.addEventListener("click", event => {
             }
         }
     })
+
+container.addEventListener("click", event => {
+    if (event.target.id.startsWith("logout")) {
+        sessionStorage.removeItem("activeUser");
+        
+    }
+})
     
 welcomeWrapper.addEventListener("click", event => {
     if (event.target.id == "login") {
@@ -96,6 +106,7 @@ welcomeWrapper.addEventListener("click", event => {
         showElement(registrationWrapper, false)
         showElement(tasksWrapper, true)
         showElement(articlesWrapper, true)
+        renderLogoutButton();
         articlesData.getUsersArticles(activeUser)
     }
 })
