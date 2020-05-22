@@ -57,10 +57,10 @@ container.addEventListener("click", event => {
         let email = document.getElementById("emailAddress").value;
         let password = document.getElementById("password").value;
         let confirmPassword = document.getElementById("confirmPassword").value;
-        let newAccount = Data.createAccountObj(username, email, password);
+        let newAccount = regData.createAccountObj(username, email, password);
         if (username !== "" && email !== "" && password !== "" && confirmPassword !== "") {
             // DO THIS IS IF ALL FORM FIELDS ARE FILLED
-            Data.getAccounts()
+            regData.getAccounts()
                 .then(users => {
                     // MAKE USER EMAILS ARRAY
                     let userEmails = users.map(user => user.email)
@@ -75,7 +75,7 @@ container.addEventListener("click", event => {
                             showElement(tasksWrapper, true)
                             showElement(articlesWrapper, true)
                             // DO THIS IF ALL VALIDATION PASSES
-                            return Data.addNewAccount(newAccount)
+                            return regData.addNewAccount(newAccount)
                         } else {
                             // DO THIS IF PASSWORD AND CONFIRM PASSWORD DON'T MATCH
                             window.alert("Passwords do not match")
@@ -105,24 +105,27 @@ welcomeWrapper.addEventListener("click", event => {
             alert("Please enter a username and password.")
         } else {
             regData.getAccounts().then( accounts => {
-                accounts.forEach(account => {
-                    if (username == account.username && password == account.password) {
-                        sessionStorage.clear()
-                        sessionStorage.setItem("activeUser", account.id)
-                        activeUser = parseInt(sessionStorage.getItem("activeUser"))
-                        showElement(welcomeWrapper, false)
-                        showElement(registrationWrapper, false)
-                        showElement(tasksWrapper, true)
-                        showElement(articlesWrapper, true)
-                        articlesData.getUsersArticles(activeUser)
-                    }
-                    else {
-                        alert("No account found.")
-                    }
-                });
+                if (accounts.length == 0) {
+                    alert("No account found.")
+                } else if (accounts.length >= 1) {
+                    accounts.forEach(account => {
+                        if (username == account.username && password == account.password) {
+                            sessionStorage.clear()
+                            sessionStorage.setItem("activeUser", account.id)
+                            activeUser = parseInt(sessionStorage.getItem("activeUser"))
+                            showElement(welcomeWrapper, false)
+                            showElement(registrationWrapper, false)
+                            showElement(tasksWrapper, true)
+                            showElement(articlesWrapper, true)
+                            articlesData.getUsersArticles(activeUser)
+                        }
+                        else {
+                            alert("No account found.")
+                        }
+                    })
+                }
             })
         }
-
     }
 })
 
