@@ -1,9 +1,9 @@
 // Author: Zane Bliss
-// Purpose: Functions for edit message features
+// Purpose: Functions for edit-message features
 
 import API from "./chatData.js"
 
-// 
+// CREATES MESSAGE OBJ, "PUT" IT TO API, THEN "GET"
 function editMessage(id) {
   const updatedMessage = {
     userId: parseInt(id),

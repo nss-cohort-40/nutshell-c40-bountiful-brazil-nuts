@@ -1,4 +1,6 @@
 // Author: Tanner Brainard
+// Purpose: Functions to render elemnents to DOM
+
 import chatComp from "./chatComp.js";
 
 

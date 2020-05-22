@@ -1,4 +1,6 @@
-// Authors: Tanner & Zane Bliss
+// Authors: Tanner Brainard & Zane Bliss
+// Purpose: Fetch functions to access and enable data manipulation
+
 const API = {
   getMessage(messageId) {
     return fetch(`http://localhost:8088/messages/${messageId}?_expand=user`).then(response => response.json());

@@ -26,49 +26,6 @@ renderForm();
 chatDOM.renderChatBox()
 chatAPI.getAllMessages().then(chatDOM.renderAllMessages);
 
-// CHAT
-document.querySelector("#chatbox").addEventListener("keypress", event => {
-    if (event.target.id == "messageInput") {
-        if (event.charCode == 13 && event.target.value != "") {
-            let newMessage = {
-                userId: parseInt(sessionStorage.getItem("activeUser")),
-                content: event.target.value
-            }
-            let messageId
-            API.submitMessage(newMessage).then(response => {
-                messageId = response.id;
-                API.getMessage(messageId).then(chatDOM.renderMessage)
-                document.getElementById("messageInput").value = "";
-            })
-        }
-    }
-}
-)
-
-document.querySelector("#chatbox").addEventListener("click", event => {
-    if (event.target.id.startsWith("messageEdit--")) {
-        let messageId = event.target.id.split("--")[1];
-        chatComp.makeEditContainer()
-        document.querySelector("#editChatContainer").innerHTML += chatComp.makeEditInput(chatAPI.getMessage(messageId))
-        chatFunctions.preloadMessage(messageId)
-        // if (event.charCode == 13) {
-        //   chatFunctions.editMessage(messageId).then(() => {
-        //     document.querySelector(".messages").innerHTML = ""
-        //     chatDOM.renderAllMessages
-        //   })
-    }
-})
-
-document.querySelector("#chatbox").addEventListener("click", event => {
-    debugger
-    if (event.target.id.startsWith("messageSave--")) {
-        let messageId = event.target.id.split("--")[1]
-        chatFunctions.editMessage(messageId).then(() => {
-            document.querySelector(".messages").innerHTML = ""
-            chatDOM.renderAllMessages
-        })
-    }
-})
 
 // HTML DOM component variables
 const container = document.getElementById("container")
@@ -277,3 +234,59 @@ container.addEventListener("click", event => {
         }
     }
 });
+
+// CHAT
+
+// EVENT LISTENER TO SUBMIT/"POST" NEW MESSAGE & RENDER
+document.querySelector("#chatbox").addEventListener("keypress", event => {
+    if (event.target.id == "messageInput") {
+        if (event.charCode == 13 && event.target.value != "") {
+            let newMessage = {
+                userId: parseInt(sessionStorage.getItem("activeUser")),
+                content: event.target.value
+            }
+            let messageId
+            chatAPI.submitMessage(newMessage).then(response => {
+                messageId = response.id;
+                chatAPI.getMessage(messageId).then(chatDOM.renderMessage)
+                document.getElementById("messageInput").value = "";
+            })
+        }
+    }
+}
+)
+
+// CREATED VARIABLE TO USE FOR SAVE BTN EVENT LISTENER; DOESN'T WORK
+let editContainer;
+// EVENT LISTENER ON EDIT BTN; PREPOPULATES EDIT BOX WITH MESSAGE CONTENT
+document.querySelector("#chatbox").addEventListener("click", event => {
+    if (event.target.id.startsWith("messageEdit--")) {
+        let messageId = event.target.id.split("--")[1];
+        chatComp.makeEditContainer()
+        editContainer = document.querySelector("#editChatContainer")
+        document.querySelector("#editChatContainer").innerHTML = chatComp.makeEditInput(chatAPI.getMessage(messageId))
+        chatFunctions.preloadMessage(messageId)
+
+        // ENTER KEYPRESS DOESN'T WORK HERE
+        // if (event.charCode == 13) {
+        //     chatFunctions.editMessage(messageId).then(() => {
+        //         document.querySelector(".messages").innerHTML = ""
+        //         chatDOM.renderAllMessages
+        //     })
+        // }
+    }
+})
+
+// EVENT LISTENER TO SAVE / "PUT" EDITED MESSAGE & RENDER
+// ERROR ON LOAD: EDITCONTAINER ISN'T ASSIGNED TILL AFTER EDIT BTN CLICKED
+
+// editContainer.addEventListener("click", event => {
+//     if (event.target.id.startsWith("messageSave--")) {
+//         // debugger
+//         let messageId = event.target.id.split("--")[1]
+//         chatFunctions.editMessage(messageId).then(() => {
+//             document.querySelector(".messages").innerHTML = ""
+//             chatDOM.renderAllMessages
+//         })
+//     }
+// })
