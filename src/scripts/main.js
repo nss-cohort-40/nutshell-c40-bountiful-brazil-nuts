@@ -7,6 +7,14 @@ import renderWelcome from "./welcDOM.js"
 import renderForm from "./regDOM.js"
 import Data from "./regData.js"
 import makeRegistrationForm from "./regComp.js"
+
+// Events
+import createEventDom from "./eventsComp.js"
+import APIevents from "./eventsData.js"
+import eventsDOM from "./eventsDOM.js"
+
+
+// REGISTRATION
 import articlesDOM from "./articlesDOM.js"
 import articlesComp from "./articlesComp.js"
 import articlesData from "./articlesData.js"
@@ -16,6 +24,7 @@ tasksDOM.writeDOM()
 tasksDOM.writeTasks()
 articlesDOM.renderArticleContainer();
 renderForm();
+createEventDom();
 
 // HTML DOM component variables
 const container = document.getElementById("container")
@@ -23,6 +32,8 @@ const welcomeWrapper = document.getElementById("welcomeWrapper")
 const tasksWrapper = document.getElementById("tasksWrapper")
 const articlesWrapper = document.getElementById("articlesWrapper")
 const registrationWrapper = document.getElementById("registrationWrapper")
+const newEventButton = document.getElementById("newEventButton")
+const eventsContainer = document.getElementById("eventsContainer")
 let activeUser = 0;
 
 // REGISTRATION
@@ -69,6 +80,7 @@ container.addEventListener("click", event => {
                             showElement(registrationWrapper, false)
                             // Add showElement functions here to display your section
                             showElement(tasksWrapper, true)
+                            showElement(newEventButton, true)
                             showElement(articlesWrapper, true)
                             // DO THIS IF ALL VALIDATION PASSES
                             return Data.addNewAccount(newAccount)
@@ -91,10 +103,10 @@ container.addEventListener("click", event => {
 welcomeWrapper.addEventListener("click", event => {
     if (event.target.id == "login") {
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
-        console.log(activeUser)
         showElement(welcomeWrapper, false)
         showElement(registrationWrapper, false)
         showElement(tasksWrapper, true)
+        showElement(newEventButton, true)
         showElement(articlesWrapper, true)
         articlesData.getUsersArticles(activeUser)
     }
@@ -165,14 +177,14 @@ container.addEventListener("click", event => {
     // NEW ARTICLE BUTTON - RENDERS NEW ARTICLE FORM
     if (event.target.id.startsWith("newArtBtn")) {
         articlesDOM.renderArticleForm();
-
-    // EDIT BUTTON - UPDATES ARTICLE FORM FOR EDITING
+        
+        // EDIT BUTTON - UPDATES ARTICLE FORM FOR EDITING
     } else if (event.target.id.startsWith("editArticle")) {
         const articleId = event.target.id.split("--")[1];
         articlesDOM.renderArticleForm();
         articlesDOM.updateArticleForm(articleId);
-
-    // DELETE BUTTON - DELETES ARTICLE
+        
+        // DELETE BUTTON - DELETES ARTICLE
     } else if (event.target.id.startsWith("deleteArticle")) {
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
         const articleId = event.target.id.split("--")[1];
@@ -180,9 +192,9 @@ container.addEventListener("click", event => {
         .then(() => {
             return articlesData.getUsersArticles(activeUser)
         })
-    
+        
     // SAVE ARTICLE BUTTON - ADDS OR EDITS ARTICLE
-    } else if (event.target.id.startsWith("saveArticle")) {
+} else if (event.target.id.startsWith("saveArticle")) {
         event.preventDefault();
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
         let hiddenArticleId = document.getElementById("articleId").value;
@@ -190,11 +202,11 @@ container.addEventListener("click", event => {
         let synopsis = document.getElementById("articleSynopsis").value;
         let url = document.getElementById("articleURL").value;
         let articleObj = articlesData.createArticleObj(title, synopsis, url);
-
+        
         // DO THIS IF ALL FORM FIELDS ARE FILLED
         if (title !== "" && synopsis !== "" && url !== "") {
             document.getElementById("articleForm-container").innerHTML = "";
-
+            
             // EDITS ARTICLE
             if (hiddenArticleId !== "") {
                 articlesData.getArticle(hiddenArticleId)
@@ -205,17 +217,92 @@ container.addEventListener("click", event => {
                     return articlesData.getUsersArticles(article.userId)
                 });
             
-            // ADDS NEW ARTICLE
+                // ADDS NEW ARTICLE
             } else if (hiddenArticleId == "") {
                 articlesData.addNewArticle(articleObj)
                 .then(() => {
                     return articlesData.getUsersArticles(activeUser)
                 });
             } 
-
+            
         // DO THIS IF ANY FORM FIELD IS BLANK
-        } else {
-            window.alert("Please complete all fields");
+    } else {
+        window.alert("Please complete all fields");
+    }
+}
+});
+
+/* -------- START Events Part --- Author: Felipe Moura ------- */
+
+// button pressed so show eventsContainer and render the events of the user
+newEventButton.addEventListener("click", async () => {
+    showElement(newEventButton, false);
+    showElement(eventsContainer, true);
+    await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+})
+
+// POST/PUT event handler
+document.getElementById("submitEventButton").addEventListener("click", async (event) => {
+    event.preventDefault();
+    let eventName = document.getElementById("eventName").value
+    let eventDate = document.getElementById("eventDate").value
+    let eventLocation = document.getElementById("eventLocation").value
+
+    // ID in a hidden input on the form
+    let eventHiddenId = document.getElementById("eventHiddenId").value
+
+    // Create a new event object
+    let newEvent = eventsDOM.createEventObjec(eventName, eventDate, eventLocation)
+
+    // Check IF it is editing an event or creating a new one in the form by the presence of *eventHiddenId*
+    // New event
+    if (!eventHiddenId) {
+        if (!eventName || !eventDate || !eventLocation) {
+            alert("Please complete the event's information to register it.")
+        }
+        else {
+            await APIevents.postEvent(newEvent)
+            await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+
+            // Clean Form Fields
+            eventsDOM.updateFormField()
         }
     }
-});
+
+    // Editing existing event
+    else {
+        if (!eventName || !eventDate || !eventLocation) {
+            alert("Please complete the event's information to edit it.")
+        } 
+        else {
+            await APIevents.editEvent(+eventHiddenId, newEvent)
+            await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+
+            // Clean form fields
+            eventsDOM.updateFormField()
+        }
+    }
+})
+
+// EDIT and DELETE event press handler
+document.getElementById("container").addEventListener("click", async (e) => {
+    if (e.target.id.startsWith("event")) {
+        e.preventDefault();
+        let action = e.target.id.split("--")[1]
+        let eventID = e.target.id.split("--")[3]
+
+        // EDIT Button pressed: send information of the event to the POST/PUT event handler, it will be responsable to send the PUT fetch call
+        if (action == "edit") {
+            let event = await APIevents.getOneEvent(eventID)
+            eventsDOM.updateFormField(event)
+        }
+
+        // DELETE Button pressed: actually delete event
+        else if (action == "delete") {
+            await APIevents.deleteEvent(eventID)
+            await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+        }
+    }
+})
+
+/* -------- END Events Part --- Author: Felipe Moura ------- */
