@@ -110,6 +110,7 @@ container.addEventListener("click", event => {
         showElement(logoutWrapper, false)
         showElement(tasksWrapper, false)
         showElement(articlesWrapper, false)
+        showElement(newEventButton, false)
         showElement(welcomeWrapper, true)
     }
 })
