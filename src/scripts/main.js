@@ -124,6 +124,7 @@ welcomeWrapper.addEventListener("click", event => {
                             showElement(registrationWrapper, false)
                             showElement(tasksWrapper, true)
                             showElement(articlesWrapper, true)
+                            showElement(newEventButton, true)
                             articlesData.getUsersArticles(activeUser)
                         }
                     })
