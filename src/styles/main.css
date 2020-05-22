@@ -22,4 +22,35 @@
     background: black;
 }
 
+/* Events */
+.first-event {
+    size: 110%;
+}
 
+
+
+/* Registration elements */
+#registration-form {
+    display: flex;
+    flex-direction: column;
+}
+#registrationWrapper {
+    display: none
+}
+
+/* Tasks elements */
+#tasksWrapper {
+    display: none;
+}
+#formView {
+display: none;
+}
+
+#newTaskBtn {
+display: block;
+}
+
+/* Articles elements */
+#articlesWrapper {
+    display: none;
+}
