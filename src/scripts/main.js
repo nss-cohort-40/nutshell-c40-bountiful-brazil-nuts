@@ -7,9 +7,10 @@ import renderWelcome from "./welcDOM.js"
 import renderForm from "./regDOM.js"
 import Data from "./regData.js"
 import makeRegistrationForm from "./regComp.js"
-import chatBox from "./chatDOM.js"
+import chatDOM from "./chatDOM.js"
 import chatAPI from "./chatData.js"
 import chatComp from "./chatComp.js"
+import chatFunctions from "./chatFunctions.js"
 
 
 // Loading site content
@@ -22,8 +23,52 @@ tasksDOM.writeDOM()
 tasksDOM.writeTasks()
 articlesDOM.renderArticleContainer();
 renderForm();
-chatBox.renderChatBox()
-chatAPI.getAllMessages().then(chatBox.renderAllMessages);
+chatDOM.renderChatBox()
+chatAPI.getAllMessages().then(chatDOM.renderAllMessages);
+
+// CHAT
+document.querySelector("#chatbox").addEventListener("keypress", event => {
+    if (event.target.id == "messageInput") {
+        if (event.charCode == 13 && event.target.value != "") {
+            let newMessage = {
+                userId: parseInt(sessionStorage.getItem("activeUser")),
+                content: event.target.value
+            }
+            let messageId
+            API.submitMessage(newMessage).then(response => {
+                messageId = response.id;
+                API.getMessage(messageId).then(chatDOM.renderMessage)
+                document.getElementById("messageInput").value = "";
+            })
+        }
+    }
+}
+)
+
+document.querySelector("#chatbox").addEventListener("click", event => {
+    if (event.target.id.startsWith("messageEdit--")) {
+        let messageId = event.target.id.split("--")[1];
+        chatComp.makeEditContainer()
+        document.querySelector("#editChatContainer").innerHTML += chatComp.makeEditInput(chatAPI.getMessage(messageId))
+        chatFunctions.preloadMessage(messageId)
+        // if (event.charCode == 13) {
+        //   chatFunctions.editMessage(messageId).then(() => {
+        //     document.querySelector(".messages").innerHTML = ""
+        //     chatDOM.renderAllMessages
+        //   })
+    }
+})
+
+document.querySelector("#chatbox").addEventListener("click", event => {
+    debugger
+    if (event.target.id.startsWith("messageSave--")) {
+        let messageId = event.target.id.split("--")[1]
+        chatFunctions.editMessage(messageId).then(() => {
+            document.querySelector(".messages").innerHTML = ""
+            chatDOM.renderAllMessages
+        })
+    }
+})
 
 // HTML DOM component variables
 const container = document.getElementById("container")
@@ -106,6 +151,7 @@ welcomeWrapper.addEventListener("click", event => {
         showElement(registrationWrapper, false)
         showElement(tasksWrapper, true)
         showElement(articlesWrapper, true)
+        showElement(chatWrapper, true)
         articlesData.getUsersArticles(activeUser)
     }
 })
