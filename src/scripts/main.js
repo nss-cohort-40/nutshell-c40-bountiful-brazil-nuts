@@ -14,6 +14,14 @@ import chatFunctions from "./chatFunctions.js"
 
 
 // Loading site content
+
+// Events
+import createEventDom from "./eventsComp.js"
+import APIevents from "./eventsData.js"
+import eventsDOM from "./eventsDOM.js"
+
+
+// REGISTRATION
 import articlesDOM from "./articlesDOM.js"
 import articlesComp from "./articlesComp.js"
 import articlesData from "./articlesData.js"
@@ -25,6 +33,7 @@ articlesDOM.renderArticleContainer();
 renderForm();
 chatDOM.renderChatBox()
 chatAPI.getAllMessages().then(chatDOM.renderAllMessages)
+createEventDom();
 
 // HTML DOM component variables
 const container = document.getElementById("container")
@@ -33,6 +42,8 @@ const tasksWrapper = document.getElementById("tasksWrapper")
 const articlesWrapper = document.getElementById("articlesWrapper")
 const registrationWrapper = document.getElementById("registrationWrapper")
 const chatWrapper = document.getElementById("chatWrapper")
+const newEventButton = document.getElementById("newEventButton")
+const eventsContainer = document.getElementById("eventsContainer")
 let activeUser = 0;
 
 // REGISTRATION
@@ -80,6 +91,7 @@ container.addEventListener("click", event => {
                             // Add showElement functions here to display your section
                             showElement(tasksWrapper, true)
                             showElement(chatWrapper, true)
+                            showElement(newEventButton, true)
                             showElement(articlesWrapper, true)
                             // DO THIS IF ALL VALIDATION PASSES
                             return Data.addNewAccount(newAccount)
@@ -105,6 +117,7 @@ welcomeWrapper.addEventListener("click", event => {
         showElement(welcomeWrapper, false)
         showElement(registrationWrapper, false)
         showElement(tasksWrapper, true)
+        showElement(newEventButton, true)
         showElement(articlesWrapper, true)
         showElement(chatWrapper, true)
         articlesData.getUsersArticles(activeUser)
@@ -276,3 +289,78 @@ document.querySelector("#chatWrapper").addEventListener("click", event => {
         })
     }
 })
+
+/* -------- START Events Part --- Author: Felipe Moura ------- */
+
+// button pressed so show eventsContainer and render the events of the user
+newEventButton.addEventListener("click", async () => {
+    showElement(newEventButton, false);
+    showElement(eventsContainer, true);
+    await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+})
+
+// POST/PUT event handler
+document.getElementById("submitEventButton").addEventListener("click", async (event) => {
+    event.preventDefault();
+    let eventName = document.getElementById("eventName").value
+    let eventDate = document.getElementById("eventDate").value
+    let eventLocation = document.getElementById("eventLocation").value
+
+    // ID in a hidden input on the form
+    let eventHiddenId = document.getElementById("eventHiddenId").value
+
+    // Create a new event object
+    let newEvent = eventsDOM.createEventObjec(eventName, eventDate, eventLocation)
+
+    // Check IF it is editing an event or creating a new one in the form by the presence of *eventHiddenId*
+    // New event
+    if (!eventHiddenId) {
+        if (!eventName || !eventDate || !eventLocation) {
+            alert("Please complete the event's information to register it.")
+        }
+        else {
+            await APIevents.postEvent(newEvent)
+            await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+
+            // Clean Form Fields
+            eventsDOM.updateFormField()
+        }
+    }
+
+    // Editing existing event
+    else {
+        if (!eventName || !eventDate || !eventLocation) {
+            alert("Please complete the event's information to edit it.")
+        }
+        else {
+            await APIevents.editEvent(+eventHiddenId, newEvent)
+            await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+
+            // Clean form fields
+            eventsDOM.updateFormField()
+        }
+    }
+})
+
+// EDIT and DELETE event press handler
+document.getElementById("container").addEventListener("click", async (e) => {
+    if (e.target.id.startsWith("event")) {
+        e.preventDefault();
+        let action = e.target.id.split("--")[1]
+        let eventID = e.target.id.split("--")[3]
+
+        // EDIT Button pressed: send information of the event to the POST/PUT event handler, it will be responsable to send the PUT fetch call
+        if (action == "edit") {
+            let event = await APIevents.getOneEvent(eventID)
+            eventsDOM.updateFormField(event)
+        }
+
+        // DELETE Button pressed: actually delete event
+        else if (action == "delete") {
+            await APIevents.deleteEvent(eventID)
+            await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+        }
+    }
+})
+
+/* -------- END Events Part --- Author: Felipe Moura ------- */
