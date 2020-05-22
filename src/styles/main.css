@@ -14,3 +14,12 @@
 .--main--container {
     height: 100vh;
 }
+
+
+.--sidebar--logo {
+    width: 150px;
+    height: 150px;
+    background: black;
+}
+
+
