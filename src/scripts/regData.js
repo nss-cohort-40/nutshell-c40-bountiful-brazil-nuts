@@ -14,6 +14,10 @@ const Data = {
     getAccounts () {
         return fetch("http://localhost:8088/users")
         .then(response => response.json())
+    }, 
+    getAccount(id) { 
+        return fetch(`http://localhost:8088/users/${id}`)
+        .then(response => response.json())
     },
     // POSTS A NEW ACCOUNT OBJECT
     addNewAccount (newAccount) {
