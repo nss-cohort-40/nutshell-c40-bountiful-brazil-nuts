@@ -30,4 +30,6 @@ Please download and install the following software to use Nutshell.
 Nutshell is a new product offering that you have been tasked with building. It's a dashboard for people to use to organize their daily tasks, events, news article, friends, and chat messages.
 
 ### About Bountiful Brazil Nuts
-We are based out of Nashville, TN and are partnered with Nashville Software School.
+We are based out of Nashville, TN and are partnered with Nashville Software School. 
+
+And that's about it...
