@@ -92,7 +92,7 @@ container.addEventListener("click", event => {
         }
     })
 
-
+// Login functionality
 welcomeWrapper.addEventListener("click", event => {
     if (event.target.id == "login") {
         showElement(loginWrapper, true)
