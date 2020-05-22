@@ -126,19 +126,13 @@ welcomeWrapper.addEventListener("click", event => {
                             showElement(articlesWrapper, true)
                             articlesData.getUsersArticles(activeUser)
                         }
-                        else {
-                            alert("No account found.")
-                        }
                     })
+                }
+                else {
+                    alert("No account found.")
                 }
             })
         }
-        showElement(welcomeWrapper, false)
-        showElement(registrationWrapper, false)
-        showElement(tasksWrapper, true)
-        showElement(newEventButton, true)
-        showElement(articlesWrapper, true)
-        articlesData.getUsersArticles(activeUser)
     }
 })
 
