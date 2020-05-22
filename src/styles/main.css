@@ -15,7 +15,38 @@
 display: none;
 }
 
-#newTaskBtn {
+#registration-form {
+    display: flex;
+    /* flex-direction: column; */
+}
+
+
+#chatWrapper {
+    display: none
+}
+#chatbox {
+    display: flex;
+    flex-flow: column-reverse;
+    align-items: flex-start;
+    border: 2px black solid;
+    max-height: 200px;
+    max-width: 300px;
+    overflow-y: scroll;
+    overflow-wrap: normal;
+}
+
+#newMessage {
+    align-self: flex-end;
+    width: 80%;
+}
+
+p.messages {
+    height: 100%;
+    width: 280px;
+    overflow-wrap: break-word;
+}
+
+/* #newTaskBtn {
 display: block;
 }
 
