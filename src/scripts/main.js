@@ -5,17 +5,30 @@ import regDOM from "./regDOM.js"
 import makeWelcome from "./welcComp.js"
 import renderWelcome from "./welcDOM.js"
 import renderForm from "./regDOM.js"
-import Data from "./regData.js"
+import regData from "./regData.js"
 import makeRegistrationForm from "./regComp.js"
+import loginDOM from "./loginDOM.js"
+import APIevents from "./eventsData.js"
+import eventsDOM from "./eventsDOM.js"
+import createEventDom from "./eventsComp.js"
 import articlesDOM from "./articlesDOM.js"
 import articlesComp from "./articlesComp.js"
 import articlesData from "./articlesData.js"
+import chatDOM from "./chatDOM.js"
+import chatAPI from "./chatData.js"
+import chatComp from "./chatComp.js"
+import chatFunctions from "./chatFunctions.js"
 
 renderWelcome();
 tasksDOM.writeDOM()
 tasksDOM.writeTasks()
+loginDOM.renderDOM()
 articlesDOM.renderArticleContainer();
 renderForm();
+createEventDom();
+chatDOM.renderChatBox()
+chatAPI.getAllMessages().then(chatDOM.renderAllMessages)
+
 
 // HTML DOM component variables
 const container = document.getElementById("container")
@@ -23,6 +36,10 @@ const welcomeWrapper = document.getElementById("welcomeWrapper")
 const tasksWrapper = document.getElementById("tasksWrapper")
 const articlesWrapper = document.getElementById("articlesWrapper")
 const registrationWrapper = document.getElementById("registrationWrapper")
+const loginWrapper = document.getElementById("loginWrapper")
+const newEventButton = document.getElementById("newEventButton")
+const eventsContainer = document.getElementById("eventsContainer")
+const chatWrapper = document.getElementById("chatWrapper")
 let activeUser = 0;
 
 // REGISTRATION
@@ -53,10 +70,10 @@ container.addEventListener("click", event => {
         let email = document.getElementById("emailAddress").value;
         let password = document.getElementById("password").value;
         let confirmPassword = document.getElementById("confirmPassword").value;
-        let newAccount = Data.createAccountObj(username, email, password);
+        let newAccount = regData.createAccountObj(username, email, password);
         if (username !== "" && email !== "" && password !== "" && confirmPassword !== "") {
             // DO THIS IS IF ALL FORM FIELDS ARE FILLED
-            Data.getAccounts()
+            regData.getAccounts()
                 .then(users => {
                     // MAKE USER EMAILS ARRAY
                     let userEmails = users.map(user => user.email)
@@ -69,34 +86,63 @@ container.addEventListener("click", event => {
                             showElement(registrationWrapper, false)
                             // Add showElement functions here to display your section
                             showElement(tasksWrapper, true)
+                            showElement(newEventButton, true)
                             showElement(articlesWrapper, true)
+                            showElement(chatWrapper, true)
                             // DO THIS IF ALL VALIDATION PASSES
-                            return Data.addNewAccount(newAccount)
+                            return regData.addNewAccount(newAccount)
                         } else {
                             // DO THIS IF PASSWORD AND CONFIRM PASSWORD DON'T MATCH
                             window.alert("Passwords do not match")
                         }
                     }
-                }).then ( response => response.json())
-                .then( user => {
+                }).then(response => response.json())
+                .then(user => {
                     return sessionStorage.setItem('activeUser', user.id)
                 })
-            } else {
-                // DO THIS IS IF ANY FORM FIELD IS BLANK
-                window.alert("Please complete your registration")
-            }
+        } else {
+            // DO THIS IS IF ANY FORM FIELD IS BLANK
+            window.alert("Please complete your registration")
         }
-    })
-    
+    }
+})
+
+// Login functionality
 welcomeWrapper.addEventListener("click", event => {
     if (event.target.id == "login") {
+        showElement(loginWrapper, true)
+    }
+    if (event.target.id == "submit") {
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
-        console.log(activeUser)
-        showElement(welcomeWrapper, false)
-        showElement(registrationWrapper, false)
-        showElement(tasksWrapper, true)
-        showElement(articlesWrapper, true)
-        articlesData.getUsersArticles(activeUser)
+        let username = document.querySelector("#loginUsername").value
+        let password = document.querySelector("#loginPassword").value
+        if (username == "" || password == "") {
+            alert("Please enter a username and password.")
+        } else {
+            regData.getAccounts().then(accounts => {
+                if (accounts.length == 0) {
+                    alert("No account found.")
+                } else if (accounts.length >= 1) {
+                    accounts.forEach(account => {
+                        if (username == account.username && password == account.password) {
+                            sessionStorage.clear()
+                            sessionStorage.setItem("activeUser", account.id)
+                            activeUser = parseInt(sessionStorage.getItem("activeUser"))
+                            showElement(welcomeWrapper, false)
+                            showElement(registrationWrapper, false)
+                            showElement(tasksWrapper, true)
+                            showElement(articlesWrapper, true)
+                            showElement(newEventButton, true)
+                            showElement(chatWrapper, true)
+                            articlesData.getUsersArticles(activeUser)
+                        }
+                    })
+                }
+                else {
+                    alert("No account found.")
+                }
+            })
+        }
     }
 })
 
@@ -161,27 +207,27 @@ document.querySelector("#tasks").addEventListener("click", event => {
 
 // ARTICLES EVENT BUBBLER: 
 container.addEventListener("click", event => {
-    
+
     // NEW ARTICLE BUTTON - RENDERS NEW ARTICLE FORM
     if (event.target.id.startsWith("newArtBtn")) {
         articlesDOM.renderArticleForm();
 
-    // EDIT BUTTON - UPDATES ARTICLE FORM FOR EDITING
+        // EDIT BUTTON - UPDATES ARTICLE FORM FOR EDITING
     } else if (event.target.id.startsWith("editArticle")) {
         const articleId = event.target.id.split("--")[1];
         articlesDOM.renderArticleForm();
         articlesDOM.updateArticleForm(articleId);
 
-    // DELETE BUTTON - DELETES ARTICLE
+        // DELETE BUTTON - DELETES ARTICLE
     } else if (event.target.id.startsWith("deleteArticle")) {
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
         const articleId = event.target.id.split("--")[1];
         articlesData.deleteArticle(articleId)
-        .then(() => {
-            return articlesData.getUsersArticles(activeUser)
-        })
-    
-    // SAVE ARTICLE BUTTON - ADDS OR EDITS ARTICLE
+            .then(() => {
+                return articlesData.getUsersArticles(activeUser)
+            })
+
+        // SAVE ARTICLE BUTTON - ADDS OR EDITS ARTICLE
     } else if (event.target.id.startsWith("saveArticle")) {
         event.preventDefault();
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
@@ -198,24 +244,146 @@ container.addEventListener("click", event => {
             // EDITS ARTICLE
             if (hiddenArticleId !== "") {
                 articlesData.getArticle(hiddenArticleId)
-                .then(articleObj => {
-                    return articlesData.editArticle(articleObj, title, synopsis, url)
-                })
-                .then(article => {
-                    return articlesData.getUsersArticles(article.userId)
-                });
-            
-            // ADDS NEW ARTICLE
+                    .then(articleObj => {
+                        return articlesData.editArticle(articleObj, title, synopsis, url)
+                    })
+                    .then(article => {
+                        return articlesData.getUsersArticles(article.userId)
+                    });
+
+                // ADDS NEW ARTICLE
             } else if (hiddenArticleId == "") {
                 articlesData.addNewArticle(articleObj)
-                .then(() => {
-                    return articlesData.getUsersArticles(activeUser)
-                });
-            } 
+                    .then(() => {
+                        return articlesData.getUsersArticles(activeUser)
+                    });
+            }
 
-        // DO THIS IF ANY FORM FIELD IS BLANK
+            // DO THIS IF ANY FORM FIELD IS BLANK
         } else {
             window.alert("Please complete all fields");
         }
     }
 });
+
+/* -------- START Events Part --- Author: Felipe Moura ------- */
+
+// button pressed so show eventsContainer and render the events of the user
+newEventButton.addEventListener("click", async () => {
+    showElement(newEventButton, false);
+    showElement(eventsContainer, true);
+    await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+})
+
+// POST/PUT event handler
+document.getElementById("submitEventButton").addEventListener("click", async (event) => {
+    event.preventDefault();
+    let eventName = document.getElementById("eventName").value
+    let eventDate = document.getElementById("eventDate").value
+    let eventLocation = document.getElementById("eventLocation").value
+
+    // ID in a hidden input on the form
+    let eventHiddenId = document.getElementById("eventHiddenId").value
+
+    // Create a new event object
+    let newEvent = eventsDOM.createEventObjec(eventName, eventDate, eventLocation)
+
+    // Check IF it is editing an event or creating a new one in the form by the presence of *eventHiddenId*
+    // New event
+    if (!eventHiddenId) {
+        if (!eventName || !eventDate || !eventLocation) {
+            alert("Please complete the event's information to register it.")
+        }
+        else {
+            await APIevents.postEvent(newEvent)
+            await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+
+            // Clean Form Fields
+            eventsDOM.updateFormField()
+        }
+    }
+
+    // Editing existing event
+    else {
+        if (!eventName || !eventDate || !eventLocation) {
+            alert("Please complete the event's information to edit it.")
+        }
+        else {
+            await APIevents.editEvent(+eventHiddenId, newEvent)
+            await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+
+            // Clean form fields
+            eventsDOM.updateFormField()
+        }
+    }
+})
+
+// EDIT and DELETE event press handler
+document.getElementById("container").addEventListener("click", async (e) => {
+    if (e.target.id.startsWith("event")) {
+        e.preventDefault();
+        let action = e.target.id.split("--")[1]
+        let eventID = e.target.id.split("--")[3]
+
+        // EDIT Button pressed: send information of the event to the POST/PUT event handler, it will be responsable to send the PUT fetch call
+        if (action == "edit") {
+            let event = await APIevents.getOneEvent(eventID)
+            eventsDOM.updateFormField(event)
+        }
+
+        // DELETE Button pressed: actually delete event
+        else if (action == "delete") {
+            await APIevents.deleteEvent(eventID)
+            await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
+        }
+    }
+})
+
+/* -------- END Events Part --- Author: Felipe Moura ------- */
+
+// CHAT
+// var messageBody = document.querySelector('#chatbox');
+// messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight
+
+// EVENT LISTENER TO SUBMIT/"POST" NEW MESSAGE & RENDER
+document.querySelector("#chatbox").addEventListener("keypress", event => {
+    if (event.target.id == "messageInput") {
+        if (event.charCode == 13 && event.target.value != "") {
+            let newMessage = {
+                userId: parseInt(sessionStorage.getItem("activeUser")),
+                content: event.target.value
+            }
+            let messageId
+            chatAPI.submitMessage(newMessage).then(response => {
+                messageId = response.id;
+                chatAPI.getMessage(messageId).then(chatDOM.renderMessage)
+                document.getElementById("messageInput").value = "";
+            })
+        }
+    }
+}
+)
+
+// EVENT LISTENER ON EDIT BTN; PREPOPULATES EDIT BOX WITH MESSAGE CONTENT
+document.querySelector("#chatbox").addEventListener("click", event => {
+    if (event.target.id.startsWith("messageEdit--")) {
+        let messageId = event.target.id.split("--")[1];
+        chatComp.makeEditContainer()
+        chatAPI.getMessage(messageId)
+        document.querySelector("#editChatContainer").innerHTML = chatComp.makeEditInput()
+        chatFunctions.preloadMessage(messageId)
+        document.querySelector("#messageSave").id = `messageSave--${messageId}`
+    }
+})
+
+// EVENT LISTENER TO SAVE / "PUT" EDITED MESSAGE & RENDER
+document.querySelector("#chatWrapper").addEventListener("click", event => {
+    if (event.target.id.startsWith("messageSave")) {
+        let messageId = event.target.id.split("--")[1]
+        chatFunctions.editMessage(messageId).then(() => {
+            let messageContent = document.querySelector("#chatId").value
+            document.querySelector(`#message--${messageId}`).innerHTML = messageContent
+            messageContent = document.querySelector("#chatId").value = ""
+        })
+    }
+})
