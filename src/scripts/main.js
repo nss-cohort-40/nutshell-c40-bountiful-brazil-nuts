@@ -41,6 +41,7 @@ const newEventButton = document.getElementById("newEventButton")
 const eventsContainer = document.getElementById("eventsContainer")
 const chatWrapper = document.getElementById("chatWrapper")
 let activeUser = 0;
+let arrayWrap = [welcomeWrapper, articlesWrapper, tasksWrapper, registrationWrapper, eventsContainer]
 
 // REGISTRATION
 
@@ -84,11 +85,17 @@ container.addEventListener("click", event => {
                         // DO THIS IF EMAIL NOT INCLUDED IN USER EMAIL ARRAY
                         if (password === confirmPassword) {
                             showElement(registrationWrapper, false)
-                            // Add showElement functions here to display your section
-                            showElement(tasksWrapper, true)
-                            showElement(newEventButton, true)
-                            showElement(articlesWrapper, true)
+//                             // Add showElement functions here to display your section
+// <<<<<<< HEAD
+//                             //>>>>>>>>showElement(tasksWrapper, true)
+//                             // >>>>>>>>>>>>>>> showElement(newEventButton, true)
+//                             //showElement(articlesWrapper, true)
+// =======
+//                             showElement(tasksWrapper, true)
+//                             showElement(newEventButton, true)
+//                             showElement(articlesWrapper, true)
                             showElement(chatWrapper, true)
+// >>>>>>> f96c8aab013710180016857896c66903dc29dd44
                             // DO THIS IF ALL VALIDATION PASSES
                             return regData.addNewAccount(newAccount)
                         } else {
@@ -114,6 +121,9 @@ welcomeWrapper.addEventListener("click", event => {
     }
     if (event.target.id == "submit") {
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
+        showElement(welcomeWrapper, false)
+        showElement(registrationWrapper, false)
+        articlesData.getUsersArticles(activeUser)
         let username = document.querySelector("#loginUsername").value
         let password = document.querySelector("#loginPassword").value
         if (username == "" || password == "") {
@@ -128,12 +138,20 @@ welcomeWrapper.addEventListener("click", event => {
                             sessionStorage.clear()
                             sessionStorage.setItem("activeUser", account.id)
                             activeUser = parseInt(sessionStorage.getItem("activeUser"))
-                            showElement(welcomeWrapper, false)
-                            showElement(registrationWrapper, false)
-                            showElement(tasksWrapper, true)
-                            showElement(articlesWrapper, true)
-                            showElement(newEventButton, true)
+// <<<<<<< HEAD
+//                             // showElement(welcomeWrapper, false)
+//                             // showElement(registrationWrapper, false)
+//                             // showElement(tasksWrapper, true)
+//                             // showElement(articlesWrapper, true)
+//                             // showElement(newEventButton, true)
+// =======
+//                             showElement(welcomeWrapper, false)
+//                             showElement(registrationWrapper, false)
+//                             showElement(tasksWrapper, true)
+//                             showElement(articlesWrapper, true)
+//                             showElement(newEventButton, true)
                             showElement(chatWrapper, true)
+// >>>>>>> f96c8aab013710180016857896c66903dc29dd44
                             articlesData.getUsersArticles(activeUser)
                         }
                     })
@@ -207,7 +225,6 @@ document.querySelector("#tasks").addEventListener("click", event => {
 
 // ARTICLES EVENT BUBBLER: 
 container.addEventListener("click", event => {
-
     // NEW ARTICLE BUTTON - RENDERS NEW ARTICLE FORM
     if (event.target.id.startsWith("newArtBtn")) {
         articlesDOM.renderArticleForm();
@@ -269,9 +286,10 @@ container.addEventListener("click", event => {
 /* -------- START Events Part --- Author: Felipe Moura ------- */
 
 // button pressed so show eventsContainer and render the events of the user
-newEventButton.addEventListener("click", async () => {
-    showElement(newEventButton, false);
-    showElement(eventsContainer, true);
+newEventButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+    // showElement(eventsContainer, true);
+    toggleContainer(eventsContainer)
     await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
 })
 
@@ -340,6 +358,32 @@ document.getElementById("container").addEventListener("click", async (e) => {
 })
 
 /* -------- END Events Part --- Author: Felipe Moura ------- */
+
+
+/*  START  DOM integration */
+
+// Task sidebar button
+document.getElementById("tasksB").addEventListener("click", (e) => {
+    e.preventDefault();
+    toggleContainer(tasksWrapper);
+    
+})
+
+// Articles sidebar button
+document.getElementById("articlesB").addEventListener("click", (e) => {
+    e.preventDefault();
+    toggleContainer(articlesWrapper);
+    
+})
+
+// toggle the showing wrapper
+const toggleContainer = (element) => {
+    for (let wrap of arrayWrap) {
+        wrap == element ? showElement(wrap, true) : showElement(wrap, false)
+    }
+}
+/*  END  DOM integration */
+
 
 // CHAT
 // var messageBody = document.querySelector('#chatbox');

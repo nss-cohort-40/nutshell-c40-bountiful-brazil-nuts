@@ -5,15 +5,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="./styles/main.css">
     <title>Document</title>
 </head>
 
 <body>
-    <article id="container">
-       
+    <article class="--article--container container-fluid">
+
+        <!--START Main container -->
+        <div class="row --main--container">
+
+            <!-- START side bar -->
+            <nav class="col-2 order-first --sidebar--container">
+                <h2 class="m-2">Nutshell</h2>
+                <div class="--sidebar--logo mt-2 mb-4 container-fluid">
+                    <img src="https://storage.needpix.com/rsynced_images/acorn-42791_1280.png" alt="" class="img-fluid pb-2" background="black">
+                </div>
+                <ul class="list-group mt-5">
+                    <a href="#" class="list-group-item list-group-item-action list-group-item-dark">Home</a>
+                    <a href="#"  id="articlesB" class="list-group-item list-group-item-action list-group-item-dark">Articles</a>
+                    <a href="" id="newEventButton" class="list-group-item list-group-item-action list-group-item-dark">Events</a>
+                    <a href="" id="tasksB" class="list-group-item list-group-item-action list-group-item-dark">Tasks</a>
+                </ul>
+            </nav>
+            <!-- END side bar -->
+
+            <!-- START central container -->
+            <div class="col-7 --central--container">
+                <div class="--central--content" id="container">
+                    <h1>Central content</h1>
+                </div>
+            </div>
+            <!-- END central container -->
+
+            <!-- START chat bar -->
+            <div class="col-3 --chatbar--container order-last" id="chatbar--container">
+                <h2 class="">Chat</h2>
+            </div>
+            <!-- END chat bar -->
+
+        <!-- END Main container -->
+        </div>
     </article>
-    <script src="./scripts/main.js" type="module"></script>
+<script src="./scripts/main.js" type="module"></script>
 </body>
 
 </html>
