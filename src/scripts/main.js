@@ -103,7 +103,6 @@ container.addEventListener("click", event => {
 welcomeWrapper.addEventListener("click", event => {
     if (event.target.id == "login") {
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
-        console.log(activeUser)
         showElement(welcomeWrapper, false)
         showElement(registrationWrapper, false)
         showElement(tasksWrapper, true)
