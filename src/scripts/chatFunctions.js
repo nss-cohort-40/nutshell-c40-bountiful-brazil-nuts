@@ -7,11 +7,10 @@ import API from "./chatData.js"
 function editMessage(id) {
   const updatedMessage = {
     userId: parseInt(id),
-    content: document.querySelector("#messageInput").value
+    content: document.querySelector("#chatId").value
   }
-  API.editMessage(id, updatedMessage).then(API.getAllMessages)
+  return API.editMessage(id, updatedMessage)
 }
-
 
 // POPULATE EDITBOX INPUT WITH SELECTED MESSAGE'S CONTENT
 function preloadMessage(messageId) {
