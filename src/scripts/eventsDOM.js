@@ -64,9 +64,9 @@ const eventsDOM = {
 
 
     //Factory event
-    createEventObjec(userID, name, date, location) {
+    createEventObjec(name, date, location) {
         return {
-            userID,
+            userID: parseInt(sessionStorage.getItem("activeUser")),
             name,
             date,
             location
