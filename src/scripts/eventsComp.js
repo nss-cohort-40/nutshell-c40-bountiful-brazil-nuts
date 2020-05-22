@@ -29,9 +29,4 @@ function createEventDom () {
 </div>`
 }
 
-function createEventButton() {
-
-}
-
-
 export default createEventDom
