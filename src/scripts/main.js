@@ -119,6 +119,8 @@ container.addEventListener("click", event => {
         showElement(articlesWrapper, false)
         showElement(newEventButton, false)
         showElement(welcomeWrapper, true)
+        showElement(chatWrapper, false)
+        showElement(loginWrapper, false)
     }
 })
     
