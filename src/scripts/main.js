@@ -5,16 +5,12 @@ import regDOM from "./regDOM.js"
 import makeWelcome from "./welcComp.js"
 import renderWelcome from "./welcDOM.js"
 import renderForm from "./regDOM.js"
-import Data from "./regData.js"
+import regData from "./regData.js"
 import makeRegistrationForm from "./regComp.js"
-
-// Events
-import createEventDom from "./eventsComp.js"
+import loginDOM from "./loginDOM.js"
 import APIevents from "./eventsData.js"
 import eventsDOM from "./eventsDOM.js"
-
-
-// REGISTRATION
+import createEventDom from "./eventsComp.js"
 import articlesDOM from "./articlesDOM.js"
 import articlesComp from "./articlesComp.js"
 import articlesData from "./articlesData.js"
@@ -22,9 +18,11 @@ import articlesData from "./articlesData.js"
 renderWelcome();
 tasksDOM.writeDOM()
 tasksDOM.writeTasks()
+loginDOM.renderDOM()
 articlesDOM.renderArticleContainer();
 renderForm();
 createEventDom();
+
 
 // HTML DOM component variables
 const container = document.getElementById("container")
@@ -32,6 +30,7 @@ const welcomeWrapper = document.getElementById("welcomeWrapper")
 const tasksWrapper = document.getElementById("tasksWrapper")
 const articlesWrapper = document.getElementById("articlesWrapper")
 const registrationWrapper = document.getElementById("registrationWrapper")
+const loginWrapper = document.getElementById("loginWrapper")
 const newEventButton = document.getElementById("newEventButton")
 const eventsContainer = document.getElementById("eventsContainer")
 let activeUser = 0;
@@ -64,10 +63,10 @@ container.addEventListener("click", event => {
         let email = document.getElementById("emailAddress").value;
         let password = document.getElementById("password").value;
         let confirmPassword = document.getElementById("confirmPassword").value;
-        let newAccount = Data.createAccountObj(username, email, password);
+        let newAccount = regData.createAccountObj(username, email, password);
         if (username !== "" && email !== "" && password !== "" && confirmPassword !== "") {
             // DO THIS IS IF ALL FORM FIELDS ARE FILLED
-            Data.getAccounts()
+            regData.getAccounts()
                 .then(users => {
                     // MAKE USER EMAILS ARRAY
                     let userEmails = users.map(user => user.email)
@@ -83,7 +82,7 @@ container.addEventListener("click", event => {
                             showElement(newEventButton, true)
                             showElement(articlesWrapper, true)
                             // DO THIS IF ALL VALIDATION PASSES
-                            return Data.addNewAccount(newAccount)
+                            return regData.addNewAccount(newAccount)
                         } else {
                             // DO THIS IF PASSWORD AND CONFIRM PASSWORD DON'T MATCH
                             window.alert("Passwords do not match")
@@ -99,16 +98,42 @@ container.addEventListener("click", event => {
             }
         }
     })
-    
+
+// Login functionality
 welcomeWrapper.addEventListener("click", event => {
     if (event.target.id == "login") {
+        showElement(loginWrapper, true)
+    } 
+    if (event.target.id == "submit") {
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
-        showElement(welcomeWrapper, false)
-        showElement(registrationWrapper, false)
-        showElement(tasksWrapper, true)
-        showElement(newEventButton, true)
-        showElement(articlesWrapper, true)
-        articlesData.getUsersArticles(activeUser)
+        let username = document.querySelector("#loginUsername").value
+        let password = document.querySelector("#loginPassword").value
+        if (username == "" || password == "") {
+            alert("Please enter a username and password.")
+        } else {
+            regData.getAccounts().then( accounts => {
+                if (accounts.length == 0) {
+                    alert("No account found.")
+                } else if (accounts.length >= 1) {
+                    accounts.forEach(account => {
+                        if (username == account.username && password == account.password) {
+                            sessionStorage.clear()
+                            sessionStorage.setItem("activeUser", account.id)
+                            activeUser = parseInt(sessionStorage.getItem("activeUser"))
+                            showElement(welcomeWrapper, false)
+                            showElement(registrationWrapper, false)
+                            showElement(tasksWrapper, true)
+                            showElement(articlesWrapper, true)
+                            showElement(newEventButton, true)
+                            articlesData.getUsersArticles(activeUser)
+                        }
+                    })
+                }
+                else {
+                    alert("No account found.")
+                }
+            })
+        }
     }
 })
 

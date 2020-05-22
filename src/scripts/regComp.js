@@ -15,10 +15,10 @@ function makeRegistrationForm () {
         <input type="text" name="emailAddress" id="emailAddress">
 
         <label for="password">Password: </label>
-        <input type="text" name="password" id="password">
+        <input type="password" name="password" id="password">
 
         <label for="confirmPassword">Confirm Password: </label>
-        <input type="text" name="confirmPassword" id="confirmPassword">
+        <input type="password" name="confirmPassword" id="confirmPassword">
         <button id="register--account">Register</button>
       </fieldset>
     </form>
