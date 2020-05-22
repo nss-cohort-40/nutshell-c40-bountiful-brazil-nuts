@@ -14,6 +14,10 @@ import createEventDom from "./eventsComp.js"
 import articlesDOM from "./articlesDOM.js"
 import articlesComp from "./articlesComp.js"
 import articlesData from "./articlesData.js"
+import chatDOM from "./chatDOM.js"
+import chatAPI from "./chatData.js"
+import chatComp from "./chatComp.js"
+import chatFunctions from "./chatFunctions.js"
 
 renderWelcome();
 tasksDOM.writeDOM()
@@ -22,6 +26,8 @@ loginDOM.renderDOM()
 articlesDOM.renderArticleContainer();
 renderForm();
 createEventDom();
+chatDOM.renderChatBox()
+chatAPI.getAllMessages().then(chatDOM.renderAllMessages)
 
 
 // HTML DOM component variables
@@ -33,6 +39,7 @@ const registrationWrapper = document.getElementById("registrationWrapper")
 const loginWrapper = document.getElementById("loginWrapper")
 const newEventButton = document.getElementById("newEventButton")
 const eventsContainer = document.getElementById("eventsContainer")
+const chatWrapper = document.getElementById("chatWrapper")
 let activeUser = 0;
 let arrayWrap = [welcomeWrapper, articlesWrapper, tasksWrapper, registrationWrapper, eventsContainer]
 
@@ -78,10 +85,17 @@ container.addEventListener("click", event => {
                         // DO THIS IF EMAIL NOT INCLUDED IN USER EMAIL ARRAY
                         if (password === confirmPassword) {
                             showElement(registrationWrapper, false)
-                            // Add showElement functions here to display your section
-                            //>>>>>>>>showElement(tasksWrapper, true)
-                            // >>>>>>>>>>>>>>> showElement(newEventButton, true)
-                            //showElement(articlesWrapper, true)
+//                             // Add showElement functions here to display your section
+// <<<<<<< HEAD
+//                             //>>>>>>>>showElement(tasksWrapper, true)
+//                             // >>>>>>>>>>>>>>> showElement(newEventButton, true)
+//                             //showElement(articlesWrapper, true)
+// =======
+//                             showElement(tasksWrapper, true)
+//                             showElement(newEventButton, true)
+//                             showElement(articlesWrapper, true)
+//                             showElement(chatWrapper, true)
+// >>>>>>> f96c8aab013710180016857896c66903dc29dd44
                             // DO THIS IF ALL VALIDATION PASSES
                             return regData.addNewAccount(newAccount)
                         } else {
@@ -89,22 +103,22 @@ container.addEventListener("click", event => {
                             window.alert("Passwords do not match")
                         }
                     }
-                }).then ( response => response.json())
-                .then( user => {
+                }).then(response => response.json())
+                .then(user => {
                     return sessionStorage.setItem('activeUser', user.id)
                 })
-            } else {
-                // DO THIS IS IF ANY FORM FIELD IS BLANK
-                window.alert("Please complete your registration")
-            }
+        } else {
+            // DO THIS IS IF ANY FORM FIELD IS BLANK
+            window.alert("Please complete your registration")
         }
-    })
+    }
+})
 
 // Login functionality
 welcomeWrapper.addEventListener("click", event => {
     if (event.target.id == "login") {
         showElement(loginWrapper, true)
-    } 
+    }
     if (event.target.id == "submit") {
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
         showElement(welcomeWrapper, false)
@@ -115,7 +129,7 @@ welcomeWrapper.addEventListener("click", event => {
         if (username == "" || password == "") {
             alert("Please enter a username and password.")
         } else {
-            regData.getAccounts().then( accounts => {
+            regData.getAccounts().then(accounts => {
                 if (accounts.length == 0) {
                     alert("No account found.")
                 } else if (accounts.length >= 1) {
@@ -124,11 +138,20 @@ welcomeWrapper.addEventListener("click", event => {
                             sessionStorage.clear()
                             sessionStorage.setItem("activeUser", account.id)
                             activeUser = parseInt(sessionStorage.getItem("activeUser"))
-                            // showElement(welcomeWrapper, false)
-                            // showElement(registrationWrapper, false)
-                            // showElement(tasksWrapper, true)
-                            // showElement(articlesWrapper, true)
-                            // showElement(newEventButton, true)
+// <<<<<<< HEAD
+//                             // showElement(welcomeWrapper, false)
+//                             // showElement(registrationWrapper, false)
+//                             // showElement(tasksWrapper, true)
+//                             // showElement(articlesWrapper, true)
+//                             // showElement(newEventButton, true)
+// =======
+//                             showElement(welcomeWrapper, false)
+//                             showElement(registrationWrapper, false)
+//                             showElement(tasksWrapper, true)
+//                             showElement(articlesWrapper, true)
+//                             showElement(newEventButton, true)
+//                             showElement(chatWrapper, true)
+// >>>>>>> f96c8aab013710180016857896c66903dc29dd44
                             articlesData.getUsersArticles(activeUser)
                         }
                     })
@@ -202,29 +225,27 @@ document.querySelector("#tasks").addEventListener("click", event => {
 
 // ARTICLES EVENT BUBBLER: 
 container.addEventListener("click", event => {
-
-    
     // NEW ARTICLE BUTTON - RENDERS NEW ARTICLE FORM
     if (event.target.id.startsWith("newArtBtn")) {
         articlesDOM.renderArticleForm();
-        
+
         // EDIT BUTTON - UPDATES ARTICLE FORM FOR EDITING
     } else if (event.target.id.startsWith("editArticle")) {
         const articleId = event.target.id.split("--")[1];
         articlesDOM.renderArticleForm();
         articlesDOM.updateArticleForm(articleId);
-        
+
         // DELETE BUTTON - DELETES ARTICLE
     } else if (event.target.id.startsWith("deleteArticle")) {
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
         const articleId = event.target.id.split("--")[1];
         articlesData.deleteArticle(articleId)
-        .then(() => {
-            return articlesData.getUsersArticles(activeUser)
-        })
-        
-    // SAVE ARTICLE BUTTON - ADDS OR EDITS ARTICLE
-} else if (event.target.id.startsWith("saveArticle")) {
+            .then(() => {
+                return articlesData.getUsersArticles(activeUser)
+            })
+
+        // SAVE ARTICLE BUTTON - ADDS OR EDITS ARTICLE
+    } else if (event.target.id.startsWith("saveArticle")) {
         event.preventDefault();
         activeUser = parseInt(sessionStorage.getItem('activeUser'))
         let hiddenArticleId = document.getElementById("articleId").value;
@@ -232,34 +253,34 @@ container.addEventListener("click", event => {
         let synopsis = document.getElementById("articleSynopsis").value;
         let url = document.getElementById("articleURL").value;
         let articleObj = articlesData.createArticleObj(title, synopsis, url);
-        
+
         // DO THIS IF ALL FORM FIELDS ARE FILLED
         if (title !== "" && synopsis !== "" && url !== "") {
             document.getElementById("articleForm-container").innerHTML = "";
-            
+
             // EDITS ARTICLE
             if (hiddenArticleId !== "") {
                 articlesData.getArticle(hiddenArticleId)
-                .then(articleObj => {
-                    return articlesData.editArticle(articleObj, title, synopsis, url)
-                })
-                .then(article => {
-                    return articlesData.getUsersArticles(article.userId)
-                });
-            
+                    .then(articleObj => {
+                        return articlesData.editArticle(articleObj, title, synopsis, url)
+                    })
+                    .then(article => {
+                        return articlesData.getUsersArticles(article.userId)
+                    });
+
                 // ADDS NEW ARTICLE
             } else if (hiddenArticleId == "") {
                 articlesData.addNewArticle(articleObj)
-                .then(() => {
-                    return articlesData.getUsersArticles(activeUser)
-                });
-            } 
-            
-        // DO THIS IF ANY FORM FIELD IS BLANK
-    } else {
-        window.alert("Please complete all fields");
+                    .then(() => {
+                        return articlesData.getUsersArticles(activeUser)
+                    });
+            }
+
+            // DO THIS IF ANY FORM FIELD IS BLANK
+        } else {
+            window.alert("Please complete all fields");
+        }
     }
-}
 });
 
 /* -------- START Events Part --- Author: Felipe Moura ------- */
@@ -304,7 +325,7 @@ document.getElementById("submitEventButton").addEventListener("click", async (ev
     else {
         if (!eventName || !eventDate || !eventLocation) {
             alert("Please complete the event's information to edit it.")
-        } 
+        }
         else {
             await APIevents.editEvent(+eventHiddenId, newEvent)
             await eventsDOM.renderOrganizedEvents(sessionStorage.getItem("activeUser"), document.getElementById("renderEvents"))
@@ -338,6 +359,7 @@ document.getElementById("container").addEventListener("click", async (e) => {
 
 /* -------- END Events Part --- Author: Felipe Moura ------- */
 
+
 /*  START  DOM integration */
 
 // Task sidebar button
@@ -359,4 +381,53 @@ const toggleContainer = (element) => {
     for (let wrap of arrayWrap) {
         wrap == element ? showElement(wrap, true) : showElement(wrap, false)
     }
-}/*  END  DOM integration */
+}
+/*  END  DOM integration */
+
+
+// CHAT
+// var messageBody = document.querySelector('#chatbox');
+// messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight
+
+// EVENT LISTENER TO SUBMIT/"POST" NEW MESSAGE & RENDER
+document.querySelector("#chatbox").addEventListener("keypress", event => {
+    if (event.target.id == "messageInput") {
+        if (event.charCode == 13 && event.target.value != "") {
+            let newMessage = {
+                userId: parseInt(sessionStorage.getItem("activeUser")),
+                content: event.target.value
+            }
+            let messageId
+            chatAPI.submitMessage(newMessage).then(response => {
+                messageId = response.id;
+                chatAPI.getMessage(messageId).then(chatDOM.renderMessage)
+                document.getElementById("messageInput").value = "";
+            })
+        }
+    }
+}
+)
+
+// EVENT LISTENER ON EDIT BTN; PREPOPULATES EDIT BOX WITH MESSAGE CONTENT
+document.querySelector("#chatbox").addEventListener("click", event => {
+    if (event.target.id.startsWith("messageEdit--")) {
+        let messageId = event.target.id.split("--")[1];
+        chatComp.makeEditContainer()
+        chatAPI.getMessage(messageId)
+        document.querySelector("#editChatContainer").innerHTML = chatComp.makeEditInput()
+        chatFunctions.preloadMessage(messageId)
+        document.querySelector("#messageSave").id = `messageSave--${messageId}`
+    }
+})
+
+// EVENT LISTENER TO SAVE / "PUT" EDITED MESSAGE & RENDER
+document.querySelector("#chatWrapper").addEventListener("click", event => {
+    if (event.target.id.startsWith("messageSave")) {
+        let messageId = event.target.id.split("--")[1]
+        chatFunctions.editMessage(messageId).then(() => {
+            let messageContent = document.querySelector("#chatId").value
+            document.querySelector(`#message--${messageId}`).innerHTML = messageContent
+            messageContent = document.querySelector("#chatId").value = ""
+        })
+    }
+})
