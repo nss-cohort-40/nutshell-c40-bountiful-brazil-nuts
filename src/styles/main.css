@@ -7,6 +7,10 @@
     display: none
 }
 
+#logoutWrapper {
+    display: none;
+}
+
 /* Tasks elements */
 #tasksWrapper {
     display: none;

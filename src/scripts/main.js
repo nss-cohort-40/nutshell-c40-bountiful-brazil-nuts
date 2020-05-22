@@ -14,6 +14,7 @@ import makeLogoutButton from "./logoutComp.js"
 import renderLogoutButton from "./logoutDOM.js"
 
 renderWelcome();
+renderLogoutButton();
 tasksDOM.writeDOM()
 tasksDOM.writeTasks()
 articlesDOM.renderArticleContainer();
@@ -69,10 +70,10 @@ container.addEventListener("click", event => {
                         // DO THIS IF EMAIL NOT INCLUDED IN USER EMAIL ARRAY
                         if (password === confirmPassword) {
                             showElement(registrationWrapper, false)
+                            showElement(logoutWrapper, true)
                             // Add showElement functions here to display your section
                             showElement(tasksWrapper, true)
                             showElement(articlesWrapper, true)
-                            renderLogoutButton();
                             // DO THIS IF ALL VALIDATION PASSES
                             return Data.addNewAccount(newAccount)
                         } else {
@@ -94,7 +95,10 @@ container.addEventListener("click", event => {
 container.addEventListener("click", event => {
     if (event.target.id.startsWith("logout")) {
         sessionStorage.removeItem("activeUser");
-        
+        showElement(logoutWrapper, false)
+        showElement(tasksWrapper, false)
+        showElement(articlesWrapper, false)
+        showElement(welcomeWrapper, true)
     }
 })
     
@@ -104,9 +108,9 @@ welcomeWrapper.addEventListener("click", event => {
         console.log(activeUser)
         showElement(welcomeWrapper, false)
         showElement(registrationWrapper, false)
+        showElement(logoutWrapper, true)
         showElement(tasksWrapper, true)
         showElement(articlesWrapper, true)
-        renderLogoutButton();
         articlesData.getUsersArticles(activeUser)
     }
 })

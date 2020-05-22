@@ -4,7 +4,9 @@
 // LOG OUT BUTTON
 function makeLogoutButton () {
     return `
-    <button id="logout">Log Out</button>
+    <section id="logoutWrapper">
+        <button id="logout">Log Out</button>
+    </section>
     `
 }
 
