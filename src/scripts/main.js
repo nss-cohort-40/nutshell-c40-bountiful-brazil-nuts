@@ -94,7 +94,7 @@ container.addEventListener("click", event => {
 //                             showElement(tasksWrapper, true)
 //                             showElement(newEventButton, true)
 //                             showElement(articlesWrapper, true)
-//                             showElement(chatWrapper, true)
+                            showElement(chatWrapper, true)
 // >>>>>>> f96c8aab013710180016857896c66903dc29dd44
                             // DO THIS IF ALL VALIDATION PASSES
                             return regData.addNewAccount(newAccount)
@@ -150,7 +150,7 @@ welcomeWrapper.addEventListener("click", event => {
 //                             showElement(tasksWrapper, true)
 //                             showElement(articlesWrapper, true)
 //                             showElement(newEventButton, true)
-//                             showElement(chatWrapper, true)
+                            showElement(chatWrapper, true)
 // >>>>>>> f96c8aab013710180016857896c66903dc29dd44
                             articlesData.getUsersArticles(activeUser)
                         }
