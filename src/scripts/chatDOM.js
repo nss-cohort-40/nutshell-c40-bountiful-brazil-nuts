@@ -6,7 +6,7 @@ import chatComp from "./chatComp.js";
 
 // RENDERS CHATBOX TO DOM
 function renderChatBox() {
-  document.getElementById("container").innerHTML += chatComp.makeChatContainer();
+  document.getElementById("chatbar--container").innerHTML += chatComp.makeChatContainer();
 }
 
 // RENDERS ALLMESSAGES ON CHATBOX LOAD

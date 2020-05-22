@@ -1,3 +1,34 @@
+
+.--sidebar--container {
+    background-color: black;
+}
+
+.--central--container {
+    background-color: white;
+}
+
+.--chatbar--container {
+    background-color: gray;
+}
+
+.--main--container {
+    height: 100vh;
+}
+
+
+.--sidebar--logo {
+    width: 150px;
+    height: 150px;
+    background: black;
+}
+
+/* Events */
+.first-event {
+    size: 110%;
+}
+
+
+
 /* Registration elements */
 #registration-form {
     display: flex;
